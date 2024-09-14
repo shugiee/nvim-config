@@ -22,4 +22,7 @@ return require('packer').startup(function(use)
   use({'neovim/nvim-lspconfig'})
   use({'hrsh7th/nvim-cmp'})
   use({'hrsh7th/cmp-nvim-lsp'})
+
+  -- Nordic theme from https://github.com/AlexvZyl/nordic.nvim
+  use 'AlexvZyl/nordic.nvim'
 end)
