@@ -29,6 +29,7 @@ lsp_zero.extend_lspconfig({
 require('lspconfig').gopls.setup({})
 require('lspconfig').rust_analyzer.setup({})
 require('lspconfig').ts_ls.setup({})
+require'lspconfig'.clangd.setup{}
 
 ---
 -- Autocompletion setup

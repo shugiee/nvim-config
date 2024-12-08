@@ -23,6 +23,14 @@ return require('packer').startup(function(use)
   use({'hrsh7th/nvim-cmp'})
   use({'hrsh7th/cmp-nvim-lsp'})
 
-  -- Nordic theme from https://github.com/AlexvZyl/nordic.nvim
+  -- Color Themes
   use 'AlexvZyl/nordic.nvim'
+  use 'catppuccin/nvim'
+
+  -- SQLite for smart_history
+  use({ "kkharji/sqlite.lua" })
+  use({
+    'nvim-telescope/telescope-smart-history.nvim',
+    requires = 'nvim-telescope/telescope.nvim'
+  })
 end)

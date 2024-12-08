@@ -28,7 +28,35 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
-vim.opt.colorcolumn = "80"
-
 --- Blinking cursor
 vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor"
+
+--- Copy file path
+vim.api.nvim_create_user_command("Path", function()
+    local path = vim.fn.expand("%:p")
+    vim.fn.setreg("+", path)
+    vim.notify('Copied "' .. path .. '" to the clipboard!')
+end, {}) 
+
+-- Hide the 80-character column indicator
+vim.opt.colorcolumn = ""
+
+-- Open file in GitHub; got this from Claude
+function OpenGitHubFile()
+    local relative_path = vim.fn.expand('%:.')
+    
+    local url = string.format('https://github.com/Asana/codez/blob/next-master/%s', 
+        relative_path
+    )
+    -- DEBUG
+    -- vim.notify("Debug: url = " .. url)
+    
+    vim.fn.system('open ' .. url)
+end
+
+vim.keymap.set('n', '<leader>gh', OpenGitHubFile, { })
+
+-- Color Scheme
+-- vim.cmd.colorscheme('nordic')
+vim.cmd.colorscheme('catppuccin')
+-- vim.cmd.colorscheme('nord')
