@@ -24,12 +24,36 @@ lsp_zero.extend_lspconfig({
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
 
--- These are just examples. Replace them with the language
--- servers you have installed in your system
-require('lspconfig').gopls.setup({})
-require('lspconfig').rust_analyzer.setup({})
-require('lspconfig').ts_ls.setup({})
-require'lspconfig'.clangd.setup{}
+-- Corrected configuration with 'ts_ls' for TypeScript
+lspconfig = require('lspconfig')
+lspconfig.gopls.setup({})
+lspconfig.rust_analyzer.setup({})
+-- require('lspconfig').ts_ls.setup({})
+lspconfig.clangd.setup({})
+lspconfig.pyright.setup({})
+
+-- Make sure TS uses only one root tsconfig file
+lspconfig.ts_ls.setup({
+  init_options = {
+    maxTsServerMemory = 24576, -- Set memory limit to 24GB
+  },
+  on_attach = function(client, bufnr)
+    client.server_capabilities.documentFormattingProvider = false
+  end,
+})
+
+-- Per chatgpt, enable diagnostics for debugging
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    -- Configure how you want diagnostics to be displayed, e.g., signs, virtual text, etc.
+    virtual_text = true,  -- Show diagnostics as virtual text inline with code
+    signs = true,         -- Display LSP signs in the sign column
+    update_in_insert = false,  -- Avoid showing diagnostics while typing
+    underline = true,     -- Underline error/warning text
+    severity_sort = true, -- Sort diagnostics by severity
+  }
+)
+
 
 ---
 -- Autocompletion setup
@@ -48,3 +72,4 @@ cmp.setup({
   },
   mapping = cmp.mapping.preset.insert({}),
 })
+

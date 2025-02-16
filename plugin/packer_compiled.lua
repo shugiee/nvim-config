@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/Users/jonathanolson/.cache/nvim/packer_hererocks/2.1.1732813678/share/lua/5.1/?.lua;/Users/jonathanolson/.cache/nvim/packer_hererocks/2.1.1732813678/share/lua/5.1/?/init.lua;/Users/jonathanolson/.cache/nvim/packer_hererocks/2.1.1732813678/lib/luarocks/rocks-5.1/?.lua;/Users/jonathanolson/.cache/nvim/packer_hererocks/2.1.1732813678/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/Users/jonathanolson/.cache/nvim/packer_hererocks/2.1.1732813678/lib/lua/5.1/?.so"
+local package_path_str = "/Users/jonathanolson/.cache/nvim/packer_hererocks/2.1.1734355927/share/lua/5.1/?.lua;/Users/jonathanolson/.cache/nvim/packer_hererocks/2.1.1734355927/share/lua/5.1/?/init.lua;/Users/jonathanolson/.cache/nvim/packer_hererocks/2.1.1734355927/lib/luarocks/rocks-5.1/?.lua;/Users/jonathanolson/.cache/nvim/packer_hererocks/2.1.1734355927/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/Users/jonathanolson/.cache/nvim/packer_hererocks/2.1.1734355927/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -79,6 +79,23 @@ _G.packer_plugins = {
     path = "/Users/jonathanolson/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp"
   },
+  ["diffview.nvim"] = {
+    config = { "\27LJ\2\n�\3\0\0\5\0\16\0\0196\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\5\0005\4\4\0=\4\6\0035\4\a\0=\4\b\0035\4\t\0=\4\n\0035\4\v\0=\4\f\3=\3\r\0025\3\14\0=\3\15\2B\0\2\1K\0\1\0\nsigns\1\0\3\14fold_open\5\16fold_closed\5\tdone\b✓\tview\15file_panel\1\0\1\nwidth\3(\17file_history\1\0\2\vlayout\21diff2_horizontal\16winbar_info\1\15merge_tool\1\0\3\16winbar_info\2\24disable_diagnostics\2\vlayout\21diff3_horizontal\fdefault\1\0\4\17file_history\0\fdefault\0\15file_panel\0\15merge_tool\0\1\0\2\vlayout\21diff2_horizontal\16winbar_info\1\1\0\4\21enhanced_diff_hl\2\nsigns\0\20signs_placement\tleft\tview\0\nsetup\rdiffview\frequire\0" },
+    loaded = true,
+    path = "/Users/jonathanolson/.local/share/nvim/site/pack/packer/start/diffview.nvim",
+    url = "https://github.com/sindrets/diffview.nvim"
+  },
+  ["git-messenger.vim"] = {
+    loaded = true,
+    path = "/Users/jonathanolson/.local/share/nvim/site/pack/packer/start/git-messenger.vim",
+    url = "https://github.com/rhysd/git-messenger.vim"
+  },
+  ["gitsigns.nvim"] = {
+    config = { "\27LJ\2\n�\2\0\0\5\0\16\0\0196\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\14\0005\3\4\0005\4\3\0=\4\5\0035\4\6\0=\4\a\0035\4\b\0=\4\t\0035\4\n\0=\4\v\0035\4\f\0=\4\r\3=\3\15\2B\0\2\1K\0\1\0\nsigns\1\0\1\nsigns\0\17changedelete\1\0\1\ttext\6~\14topdelete\1\0\1\ttext\b‾\vdelete\1\0\1\ttext\6_\vchange\1\0\1\ttext\b│\badd\1\0\5\badd\0\17changedelete\0\14topdelete\0\vdelete\0\vchange\0\1\0\1\ttext\b│\nsetup\rgitsigns\frequire\0" },
+    loaded = true,
+    path = "/Users/jonathanolson/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
+    url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
   harpoon = {
     loaded = true,
     path = "/Users/jonathanolson/.local/share/nvim/site/pack/packer/start/harpoon",
@@ -88,11 +105,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/jonathanolson/.local/share/nvim/site/pack/packer/start/lsp-zero.nvim",
     url = "https://github.com/VonHeikemen/lsp-zero.nvim"
-  },
-  ["nord.nvim"] = {
-    loaded = true,
-    path = "/Users/jonathanolson/.local/share/nvim/site/pack/packer/start/nord.nvim",
-    url = "https://github.com/shaunsingh/nord.nvim"
   },
   ["nordic.nvim"] = {
     loaded = true,
@@ -162,6 +174,14 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: diffview.nvim
+time([[Config for diffview.nvim]], true)
+try_loadstring("\27LJ\2\n�\3\0\0\5\0\16\0\0196\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\5\0005\4\4\0=\4\6\0035\4\a\0=\4\b\0035\4\t\0=\4\n\0035\4\v\0=\4\f\3=\3\r\0025\3\14\0=\3\15\2B\0\2\1K\0\1\0\nsigns\1\0\3\14fold_open\5\16fold_closed\5\tdone\b✓\tview\15file_panel\1\0\1\nwidth\3(\17file_history\1\0\2\vlayout\21diff2_horizontal\16winbar_info\1\15merge_tool\1\0\3\16winbar_info\2\24disable_diagnostics\2\vlayout\21diff3_horizontal\fdefault\1\0\4\17file_history\0\fdefault\0\15file_panel\0\15merge_tool\0\1\0\2\vlayout\21diff2_horizontal\16winbar_info\1\1\0\4\21enhanced_diff_hl\2\nsigns\0\20signs_placement\tleft\tview\0\nsetup\rdiffview\frequire\0", "config", "diffview.nvim")
+time([[Config for diffview.nvim]], false)
+-- Config for: gitsigns.nvim
+time([[Config for gitsigns.nvim]], true)
+try_loadstring("\27LJ\2\n�\2\0\0\5\0\16\0\0196\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\14\0005\3\4\0005\4\3\0=\4\5\0035\4\6\0=\4\a\0035\4\b\0=\4\t\0035\4\n\0=\4\v\0035\4\f\0=\4\r\3=\3\15\2B\0\2\1K\0\1\0\nsigns\1\0\1\nsigns\0\17changedelete\1\0\1\ttext\6~\14topdelete\1\0\1\ttext\b‾\vdelete\1\0\1\ttext\6_\vchange\1\0\1\ttext\b│\badd\1\0\5\badd\0\17changedelete\0\14topdelete\0\vdelete\0\vchange\0\1\0\1\ttext\b│\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
+time([[Config for gitsigns.nvim]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then
