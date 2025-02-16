@@ -26,7 +26,10 @@ require("lazy").setup({
     checker = { enabled = true },
     { "nvim-lua/plenary.nvim" },
     { "nvim-telescope/telescope.nvim" },
-    { "nvim-treesitter/nvim-treesitter" },
+    { 
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+    },
     { "nvim-treesitter/playground" },
     { "ThePrimeagen/harpoon" },
     { "mbbill/undotree" },
@@ -35,6 +38,7 @@ require("lazy").setup({
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/nvim-cmp" },
     { "hrsh7th/cmp-nvim-lsp" },
+    { "github/copilot.vim" },
     { "folke/todo-comments.nvim", opts = {} },
 
     -- Add gutter signs for git
