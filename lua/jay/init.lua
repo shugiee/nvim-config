@@ -1,8 +1,7 @@
 vim.g.mapleader = " "
 require("jay.remap")
-require("jay.set")
 require("jay.lazy")
--- require("jay.packer")
+require("jay.set")
 
 vim.opt.wildignore = {
   '*/tmp/*',

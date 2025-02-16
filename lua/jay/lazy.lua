@@ -31,7 +31,7 @@ require("lazy").setup({
         build = ":TSUpdate",
     },
     { "nvim-treesitter/playground" },
-    { "ThePrimeagen/harpoon" },
+    { "ThePrimeagen/harpoon", depenencies = { "nvim-lua/plenary.nvim" } },
     { "mbbill/undotree" },
     { "tpope/vim-fugitive" },
     { "VonHeikemen/lsp-zero.nvim" },
@@ -48,9 +48,9 @@ require("lazy").setup({
             require('gitsigns').setup({
                 -- Default config
                 signs = {
-                    add          = { text = '│' },
+                    add          = { text = '+' },
                     change       = { text = '│' },
-                    delete       = { text = '_' },
+                    delete       = { text = '-' },
                     topdelete    = { text = '‾' },
                     changedelete = { text = '~' },
                 }
@@ -98,7 +98,7 @@ require("lazy").setup({
 
     -- Color Themes
     { "AlexvZyl/nordic.nvim" },
-    { "catppuccin/nvim" }, 
+    { "catppuccin/nvim", name = "catppuccin" }
 
     -- SQLite for smart_history
     -- "kkharji/sqlite.lua",
