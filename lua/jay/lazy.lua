@@ -31,7 +31,7 @@ require("lazy").setup({
         build = ":TSUpdate",
     },
     { "nvim-treesitter/playground" },
-    { "ThePrimeagen/harpoon", depenencies = { "nvim-lua/plenary.nvim" } },
+    { "ThePrimeagen/harpoon" },
     { "mbbill/undotree" },
     { "tpope/vim-fugitive" },
     { "VonHeikemen/lsp-zero.nvim" },
@@ -48,9 +48,9 @@ require("lazy").setup({
             require('gitsigns').setup({
                 -- Default config
                 signs = {
-                    add          = { text = '+' },
+                    add          = { text = '│' },
                     change       = { text = '│' },
-                    delete       = { text = '-' },
+                    delete       = { text = '_' },
                     topdelete    = { text = '‾' },
                     changedelete = { text = '~' },
                 }
@@ -98,7 +98,63 @@ require("lazy").setup({
 
     -- Color Themes
     { "AlexvZyl/nordic.nvim" },
-    { "catppuccin/nvim", name = "catppuccin" }
+    { "catppuccin/nvim" }, 
+
+    {
+        {
+            "junegunn/fzf",
+            build = "./install --bin",  -- Ensures the fzf binary is installed
+        },
+        {
+            "junegunn/fzf.vim",
+            dependencies = { "junegunn/fzf" },
+            config = function()
+                -- Keybindings for FZF commands
+                vim.api.nvim_set_keymap('n', '<leader>ff', ':Files<CR>', { noremap = true, silent = true })
+                -- Create a custom command 'RgExact' that takes arguments.
+                vim.api.nvim_create_user_command("RgExact", function(opts)
+                    -- Build the ripgrep command with --fixed-strings for literal matching.
+                    local query = opts.args
+                    local cmd = "rg --fixed-strings --color=always --line-number --column --no-heading " .. vim.fn.shellescape(query)
+                    -- Call fzf#vim#grep with the command.
+                    vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
+                end, {
+                nargs = "*",
+                bang = true,
+                desc = "Search with ripgrep in exact (literal) mode",
+            })
+
+            -- Map <leader>fg to run RgExact with the word under the cursor.
+            vim.api.nvim_set_keymap(
+                "n",
+                "<leader>fg",
+                ":RgExact <C-R>=expand('<cword>')<CR><CR>",
+                { noremap = true, silent = true }
+            )
+
+            -- Search for exact string match, case-insensitive
+            vim.api.nvim_create_user_command("RgIgnoreCase", function(opts)
+                -- If no argument is provided, prompt the user.
+                local query = opts.args
+                if query == "" then
+                    query = vim.fn.input("Rg (ignore case)> ")
+                end
+                if query == "" then return end
+
+                -- Build the ripgrep command with --ignore-case.
+                local cmd = "rg --ignore-case --color=always --line-number --column --no-heading " .. vim.fn.shellescape(query)
+                vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
+            end, {
+            nargs = "*", -- Accepts arguments (if provided)
+            bang = true,
+            desc = "Search with ripgrep ignoring case",
+        })
+
+        -- Map <leader>fi to invoke the RgIgnoreCase command.
+        vim.api.nvim_set_keymap("n", "<leader>fi", ":RgIgnoreCase<CR>", { noremap = true, silent = true })
+            end
+        }
+    }
 
     -- SQLite for smart_history
     -- "kkharji/sqlite.lua",
@@ -107,4 +163,5 @@ require("lazy").setup({
         --  requires = 'nvim-telescope/telescope.nvim'
         --})
     })
+
 
