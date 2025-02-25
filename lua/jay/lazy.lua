@@ -173,7 +173,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                    "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!bazel/**' --glob '!node_modules/**' %s",
+                    "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!.git/**' %s",
                     escaped_query, escaped_root_dir
                     )
 
