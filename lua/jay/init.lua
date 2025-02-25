@@ -1,8 +1,10 @@
 vim.g.mapleader = " "
+
+vim.env.FZF_DEFAULT_COMMAND = "fd --type f --hidden --follow --exclude .git --exclude '*bazel*' . $(git rev-parse --show-toplevel 2>/dev/null || echo .)"
+
+require("jay.lazy")
 require("jay.remap")
 require("jay.set")
-require("jay.lazy")
--- require("jay.packer")
 
 vim.opt.wildignore = {
   '*/tmp/*',

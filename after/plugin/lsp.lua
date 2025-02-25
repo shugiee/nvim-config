@@ -42,6 +42,7 @@ lspconfig.ts_ls.setup({
   end,
 })
 
+
 -- Per chatgpt, enable diagnostics for debugging
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
