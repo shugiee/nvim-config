@@ -159,8 +159,6 @@ require("lazy").setup({
                         return vim.fn.getcwd() -- Fallback to current working directory
                     end
                 end
-
-                -- Search for an exact string (literal mode)
                 vim.api.nvim_create_user_command("RgExact", function(opts)
                     local query = opts.args
                     if query == "" then
@@ -175,15 +173,22 @@ require("lazy").setup({
                     )
                     vim.fn.shellescape(query)
                     vim.fn.shellescape(root_dir)
-
                     vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
                 end, {
                 nargs = "*",
                 bang = true,
                 desc = "Search with ripgrep in exact (literal) mode from project root",
             })
-  
-            -- Search ignoring case
+
+            -- Map <leader>fg to run RgExact with the word under the cursor.
+            vim.api.nvim_set_keymap(
+                "n",
+                "<leader>fg",
+                ":RgExact <C-R>=expand('<cword>')<CR><CR>",
+                { noremap = true, silent = true }
+            )
+
+            -- Search for exact string match, case-insensitive
             vim.api.nvim_create_user_command("RgIgnoreCase", function(opts)
                 local query = opts.args
                 if query == "" then
@@ -196,7 +201,6 @@ require("lazy").setup({
                 vim.fn.shellescape(query),
                 vim.fn.shellescape(root_dir)
                 )
-
                 vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
             end, {
             nargs = "*",
@@ -204,19 +208,10 @@ require("lazy").setup({
             desc = "Search with ripgrep ignoring case from project root",
         })
 
-	
-            -- Map <leader>fg to run RgExact with the word under the cursor.
-            vim.api.nvim_set_keymap(
-                "n",
-                "<leader>fg",
-                ":RgExact <C-R>=expand('<cword>')<CR><CR>",
-                { noremap = true, silent = true }
-            )
-
         -- Map <leader>fi to invoke the RgIgnoreCase command.
         vim.api.nvim_set_keymap("n", "<leader>fi", ":RgIgnoreCase<CR>", { noremap = true, silent = true })
             end
-    },
+        }
     },
     {
        "scalameta/nvim-metals",
