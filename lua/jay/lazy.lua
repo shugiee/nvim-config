@@ -149,16 +149,18 @@ require("lazy").setup({
             config = function()
                 -- Keybindings for FZF commands
                 vim.api.nvim_set_keymap('n', '<leader>ff', ':Files<CR>', { noremap = true, silent = true })
-                -- Create a custom command 'RgExact' that takes arguments.
+
                 -- Function to determine project root
                 local function get_project_root()
-                    local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
-                    if vim.v.shell_error == 0 then
-                        return git_root
+                    local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")
+                    if vim.v.shell_error == 0 and #git_root > 0 then
+                        return git_root[1]
                     else
                         return vim.fn.getcwd() -- Fallback to current working directory
                     end
                 end
+
+                -- Create a custom command 'RgExact' that takes arguments.
                 vim.api.nvim_create_user_command("RgExact", function(opts)
                     local query = opts.args
                     if query == "" then
@@ -167,12 +169,14 @@ require("lazy").setup({
                     end
 
                     local root_dir = get_project_root()
+                    local escaped_query = vim.fn.shellescape(query)
+                    local escaped_root_dir = vim.fn.shellescape(root_dir)
+
                     local cmd = string.format(
-                        "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!bazel/**' --glob '!node_modules/**' %s",
-                        search_term, search_path
+                    "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!bazel/**' --glob '!node_modules/**' %s",
+                    escaped_query, escaped_root_dir
                     )
-                    vim.fn.shellescape(query)
-                    vim.fn.shellescape(root_dir)
+
                     vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
                 end, {
                 nargs = "*",
@@ -182,10 +186,10 @@ require("lazy").setup({
 
             -- Map <leader>fg to run RgExact with the word under the cursor.
             vim.api.nvim_set_keymap(
-                "n",
-                "<leader>fg",
-                ":RgExact <C-R>=expand('<cword>')<CR><CR>",
-                { noremap = true, silent = true }
+            "n",
+            "<leader>fg",
+            ":RgExact <C-R>=expand('<cword>')<CR><CR>",
+            { noremap = true, silent = true }
             )
 
             -- Search for exact string match, case-insensitive
@@ -197,10 +201,14 @@ require("lazy").setup({
                 end
 
                 local root_dir = get_project_root()
-                local cmd = string.format("rg --ignore-case --color=always --line-number --column --no-heading %s -g '*' %s",
-                vim.fn.shellescape(query),
-                vim.fn.shellescape(root_dir)
+                local escaped_query = vim.fn.shellescape(query)
+                local escaped_root_dir = vim.fn.shellescape(root_dir)
+
+                local cmd = string.format(
+                "rg --ignore-case --color=always --line-number --column --no-heading %s -g '*' %s",
+                escaped_query, escaped_root_dir
                 )
+
                 vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
             end, {
             nargs = "*",
@@ -210,9 +218,9 @@ require("lazy").setup({
 
         -- Map <leader>fi to invoke the RgIgnoreCase command.
         vim.api.nvim_set_keymap("n", "<leader>fi", ":RgIgnoreCase<CR>", { noremap = true, silent = true })
-            end
-        }
-    },
+    end
+}
+},
     {
        "scalameta/nvim-metals",
         dependencies = {
