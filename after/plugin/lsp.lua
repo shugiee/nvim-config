@@ -36,6 +36,9 @@ lspconfig.pyright.setup({})
 lspconfig.ts_ls.setup({
   init_options = {
     maxTsServerMemory = 24576, -- Set memory limit to 24GB
+    preferences = {
+        preserveSymlinks = true
+    },
   },
   on_attach = function(client, bufnr)
     client.server_capabilities.documentFormattingProvider = false
