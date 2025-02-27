@@ -57,3 +57,5 @@ vim.keymap.set("n", "<leader>for", function()
   vim.lsp.buf.format()
 end, { desc = "Format file", noremap = true, silent = true })
 
+-- Apply sugested fix
+vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, silent = true })

@@ -28,8 +28,12 @@ lsp_zero.extend_lspconfig({
 lspconfig = require('lspconfig')
 lspconfig.gopls.setup({})
 lspconfig.rust_analyzer.setup({})
--- require('lspconfig').ts_ls.setup({})
-lspconfig.clangd.setup({})
+lspconfig.clangd.setup({
+  capabilities = {
+    offsetEncoding = { "utf-8" },
+  },
+})
+
 lspconfig.pyright.setup({})
 
 -- Make sure TS uses only one root tsconfig file
