@@ -51,3 +51,9 @@ end, { noremap = true, silent = true })
 
 -- Make panes equal width
 vim.keymap.set("n", "<leader>eq", "<C-w>=")
+
+-- Format file
+vim.keymap.set("n", "<leader>for", function()
+  vim.lsp.buf.format()
+end, { desc = "Format file", noremap = true, silent = true })
+
