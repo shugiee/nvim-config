@@ -37,7 +37,11 @@ require("lazy").setup({
     -- Icons for file explorer
     { "nvim-tree/nvim-web-devicons", opts = {} },
     { "nvim-treesitter/playground" },
-    { "ThePrimeagen/harpoon" },
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" }
+    },
     { "mbbill/undotree" },
     { "tpope/vim-fugitive" },
     { "VonHeikemen/lsp-zero.nvim" },
@@ -173,7 +177,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                    "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!.git/**' %s",
+                    "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' %s",
                     escaped_query, escaped_root_dir
                     )
 
@@ -205,7 +209,7 @@ require("lazy").setup({
                 local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                 local cmd = string.format(
-                "rg --ignore-case --color=always --line-number --column --no-heading %s -g '*' %s",
+                "rg --ignore-case --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' %s",
                 escaped_query, escaped_root_dir
                 )
 
