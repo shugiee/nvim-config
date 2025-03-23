@@ -24,13 +24,17 @@ lsp_zero.extend_lspconfig({
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
 
--- Corrected configuration with 'ts_ls' for TypeScript
 lspconfig = require('lspconfig')
 lspconfig.gopls.setup({})
 lspconfig.rust_analyzer.setup({})
--- require('lspconfig').ts_ls.setup({})
 lspconfig.clangd.setup({})
 lspconfig.pyright.setup({})
+
+-- This isn't working yet
+lspconfig.graphql.setup({
+    filetypes = { 'graphql', 'javascript', 'typescript', 'typescriptreact' },
+    root_dir = lspconfig.util.root_pattern('/Users/jonathanolson/sandbox/asana/asana2/.graphqlrc.js'),
+})
 
 -- Make sure TS uses only one root tsconfig file
 lspconfig.ts_ls.setup({

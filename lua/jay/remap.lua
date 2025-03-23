@@ -27,7 +27,7 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
 -- Replace current word
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- Easily open file's diff view
 vim.keymap.set("n", "<leader>d", [[:DiffviewOpen<CR>]])
@@ -41,5 +41,36 @@ vim.keymap.set('n', '<leader>gd', function()
     vim.cmd('DiffviewOpen ' .. parent)
 end, { noremap = true, silent = true })
 
+-- Make diffview pane wider and narrower
+vim.keymap.set("n", "<C-w>>", "20<C-w>>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-w><", "20<C-w><", { noremap = true, silent = true })
+
 -- Make panes equal width
 vim.keymap.set("n", "<leader>eq", "<C-w>=")
+
+-- See history of recent files
+vim.keymap.set("n", "<leader>h", [[:History<CR>]])
+
+-- Ignore case with fzf
+vim.env.FZF_DEFAULT_OPTS = "--ignore-case"
+
+-- See commits affecting current file
+vim.api.nvim_set_keymap("n", "<leader>bc", ":BCommits<CR>", { noremap = true, silent = true })
+
+-- Keybindings for FZF commands
+vim.api.nvim_set_keymap('n', '<leader>ff', ':Files<CR>', { noremap = true, silent = true })
+
+
+-- Map <leader>fg to run RgExact with the word under the cursor.
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>fg",
+    ":RgExact <C-R>=expand('<cword>')<CR><CR>",
+    { noremap = true, silent = true }
+)
+
+-- Map <leader>fi to invoke the RgIgnoreCase command.
+vim.api.nvim_set_keymap("n", "<leader>fi", ":RgIgnoreCase<CR>", { noremap = true, silent = true })
+
+-- Source config init.lua file
+vim.api.nvim_set_keymap("n", "<leader>so", ":luafile ~/.config/nvim/init.lua<CR>", { noremap = true, silent = true })
