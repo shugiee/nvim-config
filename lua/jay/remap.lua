@@ -74,3 +74,11 @@ vim.api.nvim_set_keymap("n", "<leader>fi", ":RgIgnoreCase<CR>", { noremap = true
 
 -- Source config init.lua file
 vim.api.nvim_set_keymap("n", "<leader>so", ":luafile ~/.config/nvim/init.lua<CR>", { noremap = true, silent = true })
+
+-- See full error message
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>e",
+  "<cmd>lua vim.diagnostic.open_float()<CR>",
+  { noremap = true, silent = true }
+)
