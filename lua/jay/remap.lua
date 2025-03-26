@@ -29,22 +29,6 @@ vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 -- Replace current word
 vim.keymap.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
--- Easily open file's diff view
-vim.keymap.set("n", "<leader>d", [[:DiffviewOpen<CR>]])
-
--- See diff'd files between current branch and next-master
-vim.keymap.set("n", "<leader>diffmaster", [[:DiffviewOpen next-master..HEAD<CR>]])
-
--- See diff'd files between current branch and parent branch
-vim.keymap.set('n', '<leader>gd', function()
-    local parent = vim.fn.system('gt parent'):gsub('\n', '')
-    vim.cmd('DiffviewOpen ' .. parent)
-end, { noremap = true, silent = true })
-
--- Make diffview pane wider and narrower
-vim.keymap.set("n", "<C-w>>", "20<C-w>>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-w><", "20<C-w><", { noremap = true, silent = true })
-
 -- Make panes equal width
 vim.keymap.set("n", "<leader>eq", "<C-w>=")
 
