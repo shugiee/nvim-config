@@ -33,15 +33,24 @@ vim.opt.foldmethod = "syntax"
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
 
---- Blinking cursor
+-- Blinking cursor
 vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor"
 
---- Copy file path
-vim.api.nvim_create_user_command("Path", function()
+-- Copy file's absolute path
+vim.api.nvim_create_user_command("CopyAbsolutePath", function()
     local path = vim.fn.expand("%:p")
     vim.fn.setreg("+", path)
     vim.notify('Copied "' .. path .. '" to the clipboard!')
 end, {}) 
+vim.keymap.set("n", "<leader>cpa", ":CopyAbsolutePath<CR>", { noremap = true, silent = true })
+
+-- Copy file's path, relative to project root
+vim.api.nvim_create_user_command('CopyRelativePath', function()
+  local path = vim.fn.expand('%:.')
+  vim.fn.setreg('+', path)
+  print('Copied relative path: ' .. path)
+end, {})
+vim.keymap.set("n", "<leader>cpr", ":CopyRelativePath<CR>", { noremap = true, silent = true })
 
 -- Hide the 80-character column indicator
 vim.opt.colorcolumn = ""
