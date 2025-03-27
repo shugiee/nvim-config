@@ -65,3 +65,6 @@ vim.keymap.set('n', '<leader>gh', OpenGitHubFile, { })
 -- vim.cmd.colorscheme('nordic')
 vim.cmd.colorscheme('catppuccin')
 -- vim.cmd.colorscheme('nord')
+
+-- Rename variable across files
+vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { noremap = true, silent = true })

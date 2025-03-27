@@ -53,8 +53,11 @@ vim.api.nvim_set_keymap(
     { noremap = true, silent = true }
 )
 
--- Map <leader>fi to invoke the RgIgnoreCase command.
-vim.api.nvim_set_keymap("n", "<leader>fi", ":RgIgnoreCase<CR>", { noremap = true, silent = true })
+-- Search for text, project-wide, with regex
+vim.api.nvim_set_keymap("n", "<leader>fir", ":RgIgnoreCase<CR>", { noremap = true, silent = true })
+
+-- Search for text, project-wide, without regex
+vim.api.nvim_set_keymap("n", "<leader>fif", ":RgIgnoreCaseFixedStrings<CR>", { noremap = true, silent = true })
 
 -- Source config init.lua file
 vim.api.nvim_set_keymap("n", "<leader>so", ":luafile ~/.config/nvim/init.lua<CR>", { noremap = true, silent = true })
@@ -66,3 +69,7 @@ vim.api.nvim_set_keymap(
   "<cmd>lua vim.diagnostic.open_float()<CR>",
   { noremap = true, silent = true }
 )
+
+-- Use tab and shift-tab to move between tabs
+vim.keymap.set('n', '<leader>tp', ':tabp<CR>', { silent = true })
+vim.keymap.set('n', '<leader>tn', ':tabn<CR>', { silent = true })
