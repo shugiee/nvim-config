@@ -70,6 +70,9 @@ vim.api.nvim_set_keymap(
   { noremap = true, silent = true }
 )
 
+-- Add tab
+vim.keymap.set('n', '<leader>ta', ':tabnew<CR>', { silent = true })
+
 -- Use tab and shift-tab to move between tabs
 vim.keymap.set('n', '<leader>tp', ':tabp<CR>', { silent = true })
 vim.keymap.set('n', '<leader>tn', ':tabn<CR>', { silent = true })
