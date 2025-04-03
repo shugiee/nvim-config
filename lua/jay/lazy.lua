@@ -1,17 +1,17 @@
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+        vim.api.nvim_echo({
+            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+            { out, "WarningMsg" },
+            { "\nPress any key to exit..." },
+        }, true, {})
+        vim.fn.getchar()
+        os.exit(1)
+    end
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -184,10 +184,10 @@ require("lazy").setup({
 
                     vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
                 end, {
-                    nargs = "*",
-                    bang = true,
-                    desc = "Search with ripgrep in exact (literal) mode from project root",
-                }
+                nargs = "*",
+                bang = true,
+                desc = "Search with ripgrep in exact (literal) mode from project root",
+            }
             )
 
             -- Search for exact string match, case-insensitive
@@ -208,38 +208,38 @@ require("lazy").setup({
                 )
                 vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
 
-                end, {
-                    nargs = "*",
-                    bang = true,
-                    desc = "Search with ripgrep ignoring case from project root",
-                }
+            end, {
+            nargs = "*",
+            bang = true,
+            desc = "Search with ripgrep ignoring case from project root",
+        }
+        )
+
+        -- Search for exact string match, case-insensitive
+        vim.api.nvim_create_user_command("RgIgnoreCaseFixedStrings", function(opts)
+            local query = opts.args
+            if query == "" then
+                query = vim.fn.input("Rg (ignore case)> ")
+                if query == "" then return end
+            end
+
+            local root_dir = get_project_root()
+            local escaped_query = vim.fn.shellescape(query)
+            local escaped_root_dir = vim.fn.shellescape(root_dir)
+
+            local cmd = string.format(
+            "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' %s",
+            escaped_query, escaped_root_dir
             )
 
-            -- Search for exact string match, case-insensitive
-            vim.api.nvim_create_user_command("RgIgnoreCaseFixedStrings", function(opts)
-                local query = opts.args
-                if query == "" then
-                    query = vim.fn.input("Rg (ignore case)> ")
-                    if query == "" then return end
-                end
-
-                local root_dir = get_project_root()
-                local escaped_query = vim.fn.shellescape(query)
-                local escaped_root_dir = vim.fn.shellescape(root_dir)
-
-                local cmd = string.format(
-                "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' %s",
-                escaped_query, escaped_root_dir
-                )
-
-                vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
-                end, {
-                    nargs = "*",
-                    bang = true,
-                    desc = "Search with ripgrep ignoring case from project root",
-                }
-            )
-    end
+            vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
+        end, {
+        nargs = "*",
+        bang = true,
+        desc = "Search with ripgrep ignoring case from project root",
+    }
+    )
+end
 }
 },
     })
