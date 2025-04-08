@@ -77,3 +77,69 @@ vim.keymap.set('n', '<leader>gh', OpenGitHubFile, { })
 
 -- Rename variable across files
 vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { noremap = true, silent = true })
+
+-- Show errors in a floating window
+local function show_output(title, lines)
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+  local width = math.floor(vim.o.columns * 0.8)
+  local height = math.floor(vim.o.lines * 0.6)
+  local row = math.floor((vim.o.lines - height) / 2)
+  local col = math.floor((vim.o.columns - width) / 2)
+
+  local win_opts = {
+    style = "minimal",
+    relative = "editor",
+    width = width,
+    height = height,
+    row = row,
+    col = col,
+    border = "rounded",
+    title = title,
+    title_pos = "center",
+  }
+
+  vim.api.nvim_open_win(buf, true, win_opts)
+end
+
+-- Generate codegen files
+vim.api.nvim_create_user_command("GenerateImports", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+  local generated_dirs = {}
+
+  for _, line in ipairs(lines) do
+    local import_path = line:match('import.*from%s+"([^"]+)"')
+    if import_path and import_path:match("/generated/") then
+      local dir = import_path:match("^(.-)/generated/")
+      if dir then
+          local dir_relative_to_asana2 = "asana2/" .. dir
+          generated_dirs[dir_relative_to_asana2] = true -- use a set to avoid duplicates
+      end
+    end
+  end
+
+  -- Build a single command with all the dirs
+  local args = {}
+  for dir, _ in pairs(generated_dirs) do
+    table.insert(args, vim.fn.shellescape(dir))
+  end
+
+  if #args == 0 then
+    print("No generated imports found.")
+    return
+  end
+
+  local cmd = "z editors codegen " .. table.concat(args, " ")
+  print("Running: " .. cmd)
+
+  vim.fn.jobstart(cmd, {
+    stdout_buffered = true,
+    stderr_buffered = true,
+  })
+end, { desc = "Generated files!" })
+
+-- Generate imports
+vim.keymap.set("n", "<leader>gen", ":GenerateImports<CR>", { noremap = true, silent = true })
