@@ -81,6 +81,14 @@ require("lazy").setup({
     { "hrsh7th/cmp-nvim-lsp" },
     { "github/copilot.vim" },
     { "folke/todo-comments.nvim", opts = {} },
+    { "folke/zen-mode.nvim", opts = {
+            {
+                window = {
+                    width = 150, -- width of the Zen window
+                },
+            }
+        }
+    },
 
     -- Add gutter signs for git
     {
@@ -152,9 +160,9 @@ require("lazy").setup({
             -- Optionally configure and load the colorscheme
             -- directly inside the plugin declaration.
             vim.g.everforest_enable_italic = true
-            vim.o.background = "dark"
+            vim.o.background = "light"
+            -- vim.g.everforest_background = "hard"
             vim.g.everforest_better_performance = true
-            vim.g.everforest_background = "hard"
             vim.cmd.colorscheme('everforest')
         end
     },
