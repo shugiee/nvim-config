@@ -111,7 +111,7 @@ vim.api.nvim_create_user_command("GenerateImports", function()
   local generated_dirs = {}
 
   for _, line in ipairs(lines) do
-    local import_path = line:match('import.*from%s+"([^"]+)"')
+    local import_path = line:match('%s*from%s+"([^"]+)"')
     if import_path and import_path:match("/generated/") then
       local dir = import_path:match("^(.-)/generated/")
       if dir then
