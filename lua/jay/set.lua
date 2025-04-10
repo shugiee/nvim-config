@@ -143,3 +143,7 @@ end, { desc = "Generated files!" })
 
 -- Generate imports
 vim.keymap.set("n", "<leader>gen", ":GenerateImports<CR>", { noremap = true, silent = true })
+
+-- Make pane bigger or smaller
+vim.keymap.set("n", "<C-w>>", "20<C-w>>", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-w><", "20<C-w><", { noremap = true, silent = true })

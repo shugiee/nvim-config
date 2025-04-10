@@ -4,6 +4,9 @@ vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<CR>", { noremap = true, si
 -- See branch changes
 vim.keymap.set("n", "<leader>bd", "<cmd>DiffviewFileHistory<CR>", { noremap = true, silent = true });
 
+-- See changes only for current buffer
+vim.keymap.set("n", "<leader>bh", "<cmd>DiffviewFileHistory %<CR>", { noremap = true, silent = true });
+
 -- See diff'd files between current branch and next-master
 vim.keymap.set("n", "<leader>diffmaster", [[:DiffviewOpen next-master..HEAD<CR>]])
 
@@ -13,6 +16,3 @@ vim.keymap.set('n', '<leader>gd', function()
     vim.cmd('DiffviewOpen ' .. parent)
 end, { noremap = true, silent = true })
 
--- Make diffview pane wider and narrower
-vim.keymap.set("n", "<C-w>>", "20<C-w>>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-w><", "20<C-w><", { noremap = true, silent = true })
