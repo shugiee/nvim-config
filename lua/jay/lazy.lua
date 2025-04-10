@@ -45,7 +45,6 @@ require("lazy").setup({
     { "mbbill/undotree" },
     { "tpope/vim-fugitive" },
     { "VonHeikemen/lsp-zero.nvim" },
-    { "neovim/nvim-lspconfig" },
     {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
@@ -160,7 +159,7 @@ require("lazy").setup({
             -- Optionally configure and load the colorscheme
             -- directly inside the plugin declaration.
             vim.g.everforest_enable_italic = true
-            vim.o.background = "light"
+            vim.o.background = "dark"
             -- vim.g.everforest_background = "hard"
             vim.g.everforest_better_performance = true
             vim.cmd.colorscheme('everforest')
@@ -261,7 +260,17 @@ require("lazy").setup({
         desc = "Search with ripgrep ignoring case from project root",
     }
     )
-end
-}
-},
+    end
+    }
+    },
+    
+    -- Stuff for GraphQL
+    {
+        "neovim/nvim-lspconfig",
+        dependencies = {
+            { "williamboman/mason.nvim", config = true },
+            { "williamboman/mason-lspconfig.nvim", config = true },
+            { "VonHeikemen/lsp-zero.nvim" },
+        },
+    }
     })

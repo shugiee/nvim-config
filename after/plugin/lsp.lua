@@ -18,6 +18,10 @@ local lsp_attach = function(client, bufnr)
   vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 end
 
+require("mason-lspconfig").setup {
+  ensure_installed = { "graphql" },
+}
+
 lsp_zero.extend_lspconfig({
   sign_text = true,
   lsp_attach = lsp_attach,
@@ -25,15 +29,13 @@ lsp_zero.extend_lspconfig({
 })
 
 lspconfig = require('lspconfig')
-lspconfig.gopls.setup({})
-lspconfig.rust_analyzer.setup({})
 lspconfig.clangd.setup({})
 lspconfig.pyright.setup({})
 
 -- This isn't working yet
-lspconfig.graphql.setup({
-    filetypes = { 'graphql', 'javascript', 'typescript', 'typescriptreact' },
-    root_dir = lspconfig.util.root_pattern('/Users/jonathanolson/sandbox/asana/asana2/.graphqlrc.js'),
+require("lspconfig").graphql.setup({
+    filetypes = { "graphql", "javascript", "typescript", "typescriptreact" },
+    root_dir = require("lspconfig.util").root_pattern(".graphqlrc*", "graphql.config.*", "package.json"),
 })
 
 -- Make sure TS uses only one root tsconfig file
