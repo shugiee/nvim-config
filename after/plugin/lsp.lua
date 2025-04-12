@@ -19,7 +19,7 @@ local lsp_attach = function(client, bufnr)
 end
 
 require("mason-lspconfig").setup {
-  ensure_installed = { "graphql" },
+  ensure_installed = { "graphql", "cssls" },
 }
 
 lsp_zero.extend_lspconfig({
@@ -51,6 +51,13 @@ lspconfig.ts_ls.setup({
   end,
 })
 
+lspconfig.cssls.setup({
+  settings = {
+    css = { validate = true },
+    scss = { validate = true },
+    less = { validate = true },
+  },
+})
 
 -- Per chatgpt, enable diagnostics for debugging
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
