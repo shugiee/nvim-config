@@ -147,3 +147,8 @@ vim.keymap.set("n", "<leader>gen", ":GenerateImports<CR>", { noremap = true, sil
 -- Make pane bigger or smaller
 vim.keymap.set("n", "<C-w>>", "20<C-w>>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-w><", "20<C-w><", { noremap = true, silent = true })
+
+-- Format file
+vim.keymap.set("n", "<leader>f", function()
+  vim.lsp.buf.format({ async = true })
+end, { desc = "Format buffer" })

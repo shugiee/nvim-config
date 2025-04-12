@@ -19,7 +19,7 @@ local lsp_attach = function(client, bufnr)
 end
 
 require("mason-lspconfig").setup {
-  ensure_installed = { "graphql", "cssls" },
+  ensure_installed = { "graphql", "cssls", "html" },
 }
 
 lsp_zero.extend_lspconfig({
@@ -31,6 +31,7 @@ lsp_zero.extend_lspconfig({
 lspconfig = require('lspconfig')
 lspconfig.clangd.setup({})
 lspconfig.pyright.setup({})
+lspconfig.html.setup({})
 
 -- This isn't working yet
 require("lspconfig").graphql.setup({
