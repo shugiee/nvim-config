@@ -272,5 +272,13 @@ require("lazy").setup({
             { "williamboman/mason-lspconfig.nvim", config = true },
             { "VonHeikemen/lsp-zero.nvim" },
         },
+    },
+    
+    -- Formatting
+    {
+        {
+            'stevearc/conform.nvim',
+            opts = {},
+        }
     }
     })
