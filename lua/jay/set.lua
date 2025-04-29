@@ -23,10 +23,12 @@ vim.opt.incsearch = true
 vim.opt.termguicolors = true
 
 vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
+
+-- Don't include `l` format option since it forces a line wrap
+vim.opt.formatoptions = "jcroq"
 
 -- Fold based on syntax
 vim.opt.foldmethod = "syntax"
@@ -152,3 +154,6 @@ vim.keymap.set("n", "<C-w><", "20<C-w><", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>f", function()
   vim.lsp.buf.format({ async = true })
 end, { desc = "Format buffer" })
+
+-- Show all marks
+vim.keymap.set("n", "<leader>ma", ":MarksListAll<CR>", { noremap = true, silent = true })

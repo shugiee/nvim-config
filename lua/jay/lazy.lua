@@ -280,5 +280,10 @@ require("lazy").setup({
             'stevearc/conform.nvim',
             opts = {},
         }
+    },
+    {
+      "chentoast/marks.nvim",
+      event = "VeryLazy",
+      opts = {},
     }
     })
