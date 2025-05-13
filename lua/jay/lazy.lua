@@ -94,7 +94,6 @@ require("lazy").setup({
         "lewis6991/gitsigns.nvim",
         config = function()
             require('gitsigns').setup({
-                -- Default config
                 signs = {
                     add          = { text = '│' },
                     change       = { text = '│' },
@@ -127,12 +126,12 @@ require("lazy").setup({
                         layout = "diff2_horizontal",
                         winbar_info = false,
                     },
-                    file_panel = {
-                        listing_style = "list",
-                        win_config = {
-                            position = "left",
-                            size = 200, -- Instead of width
-                        },
+                },
+                file_panel = {
+                    listing_style = "list",
+                    win_config = {
+                        position = "left",
+                        width = 60, -- Instead of width
                     },
                 },
                 signs = {
