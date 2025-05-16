@@ -162,7 +162,12 @@ vim.keymap.set("n", "<leader>ma", ":MarksListAll<CR>", { noremap = true, silent 
 vim.keymap.set("n", "<leader>r", function()
   local command = vim.fn.input("Command: ")
   if command ~= "" then
-    vim.fn.system(command)
-    print("Running: " .. command)
+    local output = vim.fn.system(command)
+    local lines = vim.split(output, "\n")
+    if #lines > 0 then
+      show_output("Command Output", lines)
+    else
+      print("No output from command.")
+    end
   end
 end, { noremap = true, silent = true })
