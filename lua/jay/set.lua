@@ -43,14 +43,14 @@ vim.api.nvim_create_user_command("CopyAbsolutePath", function()
     local path = vim.fn.expand("%:p")
     vim.fn.setreg("+", path)
     vim.notify('Copied "' .. path .. '" to the clipboard!')
-end, {}) 
+end, {})
 vim.keymap.set("n", "<leader>cpa", ":CopyAbsolutePath<CR>", { noremap = true, silent = true })
 
 -- Copy file's path, relative to project root
 vim.api.nvim_create_user_command('CopyRelativePath', function()
-  local path = vim.fn.expand('%:.')
-  vim.fn.setreg('+', path)
-  print('Copied relative path: ' .. path)
+    local path = vim.fn.expand('%:.')
+    vim.fn.setreg('+', path)
+    print('Copied relative path: ' .. path)
 end, {})
 vim.keymap.set("n", "<leader>cpr", ":CopyRelativePath<CR>", { noremap = true, silent = true })
 
@@ -60,17 +60,17 @@ vim.opt.colorcolumn = ""
 -- Open file in GitHub; got this from Claude
 function OpenGitHubFile()
     local relative_path = vim.fn.expand('%:.')
-    
-    local url = string.format('https://github.com/Asana/codez/blob/next-master/%s', 
+
+    local url = string.format('https://github.com/Asana/codez/blob/next-master/%s',
         relative_path
     )
     -- DEBUG
     -- vim.notify("Debug: url = " .. url)
-    
+
     vim.fn.system('open ' .. url)
 end
 
-vim.keymap.set('n', '<leader>gh', OpenGitHubFile, { })
+vim.keymap.set('n', '<leader>gh', OpenGitHubFile, {})
 
 -- Color Scheme
 -- vim.cmd.colorscheme('nordic')
@@ -82,65 +82,65 @@ vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { noremap = true, silent = 
 
 -- Show errors in a floating window
 local function show_output(title, lines)
-  local buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
-  local width = math.floor(vim.o.columns * 0.8)
-  local height = math.floor(vim.o.lines * 0.6)
-  local row = math.floor((vim.o.lines - height) / 2)
-  local col = math.floor((vim.o.columns - width) / 2)
+    local width = math.floor(vim.o.columns * 0.8)
+    local height = math.floor(vim.o.lines * 0.6)
+    local row = math.floor((vim.o.lines - height) / 2)
+    local col = math.floor((vim.o.columns - width) / 2)
 
-  local win_opts = {
-    style = "minimal",
-    relative = "editor",
-    width = width,
-    height = height,
-    row = row,
-    col = col,
-    border = "rounded",
-    title = title,
-    title_pos = "center",
-  }
+    local win_opts = {
+        style = "minimal",
+        relative = "editor",
+        width = width,
+        height = height,
+        row = row,
+        col = col,
+        border = "rounded",
+        title = title,
+        title_pos = "center",
+    }
 
-  vim.api.nvim_open_win(buf, true, win_opts)
+    vim.api.nvim_open_win(buf, true, win_opts)
 end
 
 -- Generate codegen files
 vim.api.nvim_create_user_command("GenerateImports", function()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local bufnr = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 
-  local generated_dirs = {}
+    local generated_dirs = {}
 
-  for _, line in ipairs(lines) do
-    local import_path = line:match('%s*from%s+"([^"]+)"')
-    if import_path and import_path:match("/generated/") then
-      local dir = import_path:match("^(.-)/generated/")
-      if dir then
-          local dir_relative_to_asana2 = "asana2/" .. dir
-          generated_dirs[dir_relative_to_asana2] = true -- use a set to avoid duplicates
-      end
+    for _, line in ipairs(lines) do
+        local import_path = line:match('%s*from%s+"([^"]+)"')
+        if import_path and import_path:match("/generated/") then
+            local dir = import_path:match("^(.-)/generated/")
+            if dir then
+                local dir_relative_to_asana2 = "asana2/" .. dir
+                generated_dirs[dir_relative_to_asana2] = true -- use a set to avoid duplicates
+            end
+        end
     end
-  end
 
-  -- Build a single command with all the dirs
-  local args = {}
-  for dir, _ in pairs(generated_dirs) do
-    table.insert(args, vim.fn.shellescape(dir))
-  end
+    -- Build a single command with all the dirs
+    local args = {}
+    for dir, _ in pairs(generated_dirs) do
+        table.insert(args, vim.fn.shellescape(dir))
+    end
 
-  if #args == 0 then
-    print("No generated imports found.")
-    return
-  end
+    if #args == 0 then
+        print("No generated imports found.")
+        return
+    end
 
-  local cmd = "z editors codegen " .. table.concat(args, " ")
-  print("Running: " .. cmd)
+    local cmd = "z editors codegen " .. table.concat(args, " ")
+    print("Running: " .. cmd)
 
-  vim.fn.jobstart(cmd, {
-    stdout_buffered = true,
-    stderr_buffered = true,
-  })
+    vim.fn.jobstart(cmd, {
+        stdout_buffered = true,
+        stderr_buffered = true,
+    })
 end, { desc = "Generated files!" })
 
 -- Generate imports
@@ -152,7 +152,7 @@ vim.keymap.set("n", "<C-w><", "20<C-w><", { noremap = true, silent = true })
 
 -- Format file
 vim.keymap.set("n", "<leader>f", function()
-  vim.lsp.buf.format({ async = true })
+    vim.lsp.buf.format({ async = true })
 end, { desc = "Format buffer" })
 
 -- Show all marks
@@ -160,14 +160,20 @@ vim.keymap.set("n", "<leader>ma", ":MarksListAll<CR>", { noremap = true, silent 
 
 -- Run cli command
 vim.keymap.set("n", "<leader>r", function()
-  local command = vim.fn.input("Command: ")
-  if command ~= "" then
-    local output = vim.fn.system(command)
-    local lines = vim.split(output, "\n")
-    if #lines > 0 then
-      show_output("Command Output", lines)
-    else
-      print("No output from command.")
+    local command = vim.fn.input("Command: ")
+    if command ~= "" then
+        local output = vim.fn.system(command)
+        local lines = vim.split(output, "\n")
+        if #lines > 0 then
+            show_output("Command Output", lines)
+        else
+            print("No output from command.")
+        end
     end
-  end
 end, { noremap = true, silent = true })
+
+vim.cmd([[
+  highlight DiffAdd    guibg=#12261e guifg=NONE gui=NONE
+  highlight DiffChange guibg=#12261e guifg=NONE gui=NONE
+  highlight DiffText   guibg=#19855a guifg=NONE gui=NONE
+]])
