@@ -75,6 +75,7 @@ vim.keymap.set('n', '<leader>gh', OpenGitHubFile, {})
 -- Color Scheme
 -- vim.cmd.colorscheme('nordic')
 -- vim.cmd.colorscheme('catppuccin')
+vim.cmd.colorscheme('catppuccin-mocha')
 -- vim.cmd.colorscheme('nord')
 
 -- Rename variable across files

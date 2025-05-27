@@ -6,7 +6,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     if vim.v.shell_error ~= 0 then
         vim.api.nvim_echo({
             { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out, "WarningMsg" },
+            { out,                            "WarningMsg" },
             { "\nPress any key to exit..." },
         }, true, {})
         vim.fn.getchar()
@@ -31,7 +31,7 @@ require("lazy").setup({
     { "nvim-treesitter" },
     { "nvim-lua/plenary.nvim" },
     { "nvim-telescope/telescope.nvim" },
-    { 
+    {
         "nvim-treesitter/nvim-treesitter",
     },
     -- Icons for file explorer
@@ -80,7 +80,9 @@ require("lazy").setup({
     { "hrsh7th/cmp-nvim-lsp" },
     { "github/copilot.vim" },
     { "folke/todo-comments.nvim", opts = {} },
-    { "folke/zen-mode.nvim", opts = {
+    {
+        "folke/zen-mode.nvim",
+        opts = {
             {
                 window = {
                     width = 150, -- width of the Zen window
@@ -149,27 +151,27 @@ require("lazy").setup({
 
     -- Color Themes
     { "AlexvZyl/nordic.nvim" },
-    { "catppuccin/nvim" }, 
-    {
-        'sainnhe/everforest',
-        lazy = false,
-        priority = 1000,
-        config = function()
-            -- Optionally configure and load the colorscheme
-            -- directly inside the plugin declaration.
-            vim.g.everforest_enable_italic = true
-            vim.o.background = "dark"
-            -- vim.g.everforest_background = "hard"
-            vim.g.everforest_better_performance = true
-            vim.cmd.colorscheme('everforest')
-        end
-    },
+    { "catppuccin/nvim" },
+    --    {
+    --        'sainnhe/everforest',
+    --        lazy = false,
+    --        priority = 1000,
+    --        config = function()
+    --            -- Optionally configure and load the colorscheme
+    --            -- directly inside the plugin declaration.
+    --            vim.g.everforest_enable_italic = true
+    --            vim.o.background = "dark"
+    --            -- vim.g.everforest_background = "hard"
+    --            vim.g.everforest_better_performance = true
+    --            vim.cmd.colorscheme('everforest')
+    --        end
+    --    },
 
     -- fzf for fast file search
     {
         {
             "junegunn/fzf",
-            build = "./install --bin",  -- Ensures the fzf binary is installed
+            build = "./install --bin", -- Ensures the fzf binary is installed
         },
         {
             "junegunn/fzf.vim",
@@ -198,81 +200,80 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                    "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' %s",
-                    escaped_query, escaped_root_dir
+                        "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' %s",
+                        escaped_query, escaped_root_dir
                     )
 
                     vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
                 end, {
-                nargs = "*",
-                bang = true,
-                desc = "Search with ripgrep in exact (literal) mode from project root",
-            }
-            )
-
-            -- Search for exact string match, case-insensitive
-            vim.api.nvim_create_user_command("RgIgnoreCase", function(opts)
-                local query = opts.args
-                if query == "" then
-                    query = vim.fn.input("Rg (ignore case)> ")
-                    if query == "" then return end
-                end
-
-                local root_dir = get_project_root()
-                local escaped_query = vim.fn.shellescape(query)
-                local escaped_root_dir = vim.fn.shellescape(root_dir)
-
-                local cmd = string.format(
-                "rg --ignore-case --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' %s",
-                escaped_query, escaped_root_dir
+                    nargs = "*",
+                    bang = true,
+                    desc = "Search with ripgrep in exact (literal) mode from project root",
+                }
                 )
-                vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
 
-            end, {
-            nargs = "*",
-            bang = true,
-            desc = "Search with ripgrep ignoring case from project root",
-        }
-        )
+                -- Search for exact string match, case-insensitive
+                vim.api.nvim_create_user_command("RgIgnoreCase", function(opts)
+                    local query = opts.args
+                    if query == "" then
+                        query = vim.fn.input("Rg (ignore case)> ")
+                        if query == "" then return end
+                    end
 
-        -- Search for exact string match, case-insensitive
-        vim.api.nvim_create_user_command("RgIgnoreCaseFixedStrings", function(opts)
-            local query = opts.args
-            if query == "" then
-                query = vim.fn.input("Rg (ignore case)> ")
-                if query == "" then return end
+                    local root_dir = get_project_root()
+                    local escaped_query = vim.fn.shellescape(query)
+                    local escaped_root_dir = vim.fn.shellescape(root_dir)
+
+                    local cmd = string.format(
+                        "rg --ignore-case --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' %s",
+                        escaped_query, escaped_root_dir
+                    )
+                    vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
+                end, {
+                    nargs = "*",
+                    bang = true,
+                    desc = "Search with ripgrep ignoring case from project root",
+                }
+                )
+
+                -- Search for exact string match, case-insensitive
+                vim.api.nvim_create_user_command("RgIgnoreCaseFixedStrings", function(opts)
+                    local query = opts.args
+                    if query == "" then
+                        query = vim.fn.input("Rg (ignore case)> ")
+                        if query == "" then return end
+                    end
+
+                    local root_dir = get_project_root()
+                    local escaped_query = vim.fn.shellescape(query)
+                    local escaped_root_dir = vim.fn.shellescape(root_dir)
+
+                    local cmd = string.format(
+                        "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' %s",
+                        escaped_query, escaped_root_dir
+                    )
+
+                    vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
+                end, {
+                    nargs = "*",
+                    bang = true,
+                    desc = "Search with ripgrep ignoring case from project root",
+                }
+                )
             end
-
-            local root_dir = get_project_root()
-            local escaped_query = vim.fn.shellescape(query)
-            local escaped_root_dir = vim.fn.shellescape(root_dir)
-
-            local cmd = string.format(
-            "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' %s",
-            escaped_query, escaped_root_dir
-            )
-
-            vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
-        end, {
-        nargs = "*",
-        bang = true,
-        desc = "Search with ripgrep ignoring case from project root",
-    }
-    )
-    end
-    }
+        }
     },
-    
+
     -- Stuff for GraphQL
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            { "williamboman/mason.nvim", config = true },
+            { "williamboman/mason.nvim",           config = true },
             { "williamboman/mason-lspconfig.nvim", config = true },
             { "VonHeikemen/lsp-zero.nvim" },
         },
     },
-    
+
     -- Formatting
     {
         {
@@ -281,8 +282,8 @@ require("lazy").setup({
         }
     },
     {
-      "chentoast/marks.nvim",
-      event = "VeryLazy",
-      opts = {},
+        "chentoast/marks.nvim",
+        event = "VeryLazy",
+        opts = {},
     }
-    })
+})
