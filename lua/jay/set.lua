@@ -174,7 +174,6 @@ vim.keymap.set("n", "<leader>r", function()
 end, { noremap = true, silent = true })
 
 vim.cmd([[
-  highlight DiffAdd    guibg=#12261e guifg=NONE gui=NONE
-  highlight DiffChange guibg=#12261e guifg=NONE gui=NONE
-  highlight DiffText   guibg=#19855a guifg=NONE gui=NONE
+  highlight DiffChange guibg=#334143 guifg=NONE gui=NONE
+  highlight DiffText   guibg=#576f73 guifg=NONE gui=NONE
 ]])
