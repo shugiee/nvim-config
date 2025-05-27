@@ -20,7 +20,7 @@ vim.keymap.set("x", "<leader>p", "\"_dP")
 vim.keymap.set("n", "Q", "<nop>")
 
 -- Easily copy to real clipboard
-vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 -- Use tmux to easily jump between projects
@@ -54,7 +54,7 @@ vim.api.nvim_set_keymap(
 )
 
 -- Search for text, project-wide, with regex
-vim.api.nvim_set_keymap("n", "<leader>fir", ":RgIgnoreCase<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>fir", ":Rg<CR>", { noremap = true, silent = true })
 
 -- Search for text, project-wide, without regex
 vim.api.nvim_set_keymap("n", "<leader>fif", ":RgIgnoreCaseFixedStrings<CR>", { noremap = true, silent = true })
@@ -64,10 +64,10 @@ vim.api.nvim_set_keymap("n", "<leader>so", ":luafile ~/.config/nvim/init.lua<CR>
 
 -- See full error message
 vim.api.nvim_set_keymap(
-  "n",
-  "<leader>e",
-  "<cmd>lua vim.diagnostic.open_float()<CR>",
-  { noremap = true, silent = true }
+    "n",
+    "<leader>e",
+    "<cmd>lua vim.diagnostic.open_float()<CR>",
+    { noremap = true, silent = true }
 )
 
 -- Add tab

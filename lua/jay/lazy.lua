@@ -212,11 +212,11 @@ require("lazy").setup({
                 }
                 )
 
-                -- Search for exact string match, case-insensitive
-                vim.api.nvim_create_user_command("RgIgnoreCase", function(opts)
+                -- Search for exact string match
+                vim.api.nvim_create_user_command("Rg", function(opts)
                     local query = opts.args
                     if query == "" then
-                        query = vim.fn.input("Rg (ignore case)> ")
+                        query = vim.fn.input("Rg")
                         if query == "" then return end
                     end
 
@@ -225,7 +225,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --ignore-case --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' %s",
+                        "rg --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' %s",
                         escaped_query, escaped_root_dir
                     )
                     vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
