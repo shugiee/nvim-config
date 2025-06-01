@@ -153,7 +153,7 @@ vim.keymap.set("n", "<C-w><", "20<C-w><", { noremap = true, silent = true })
 
 -- Format file
 vim.keymap.set("n", "<leader>f", function()
-    vim.lsp.buf.format({ async = true })
+    require("conform").format({ async = true })
 end, { desc = "Format buffer" })
 
 -- Show all marks
