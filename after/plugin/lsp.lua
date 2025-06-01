@@ -19,7 +19,7 @@ local lsp_attach = function(client, bufnr)
 end
 
 require("mason-lspconfig").setup {
-    ensure_installed = { "graphql", "cssls", "html", "lua_ls" },
+    ensure_installed = { "graphql", "cssls", "html", "lua_ls", "html" },
 }
 
 lsp_zero.extend_lspconfig({
@@ -28,7 +28,7 @@ lsp_zero.extend_lspconfig({
     capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
 
-lspconfig = require('lspconfig')
+local lspconfig = require('lspconfig')
 lspconfig.clangd.setup({})
 lspconfig.pyright.setup({})
 lspconfig.html.setup({})
@@ -46,7 +46,7 @@ lspconfig.lua_ls.setup({
 })
 
 -- This isn't working yet
-require("lspconfig").graphql.setup({
+lspconfig.graphql.setup({
     filetypes = { "graphql", "javascript", "typescript", "typescriptreact" },
     root_dir = require("lspconfig.util").root_pattern(".graphqlrc*", "graphql.config.*", "package.json"),
 })
