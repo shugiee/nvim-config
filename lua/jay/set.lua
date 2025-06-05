@@ -27,6 +27,9 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
+-- Hide whitespace in git diffs
+vim.opt.diffopt:append("iwhite")
+
 -- Don't include `l` format option since it forces a line wrap
 vim.opt.formatoptions = "jcroq"
 
