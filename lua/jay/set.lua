@@ -180,3 +180,14 @@ vim.cmd([[
   highlight DiffChange guibg=#334143 guifg=NONE gui=NONE
   highlight DiffText   guibg=#576f73 guifg=NONE gui=NONE
 ]])
+
+-- Reload all buffers
+vim.keymap.set("n", "<leader>re", function()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) and vim.fn.buflisted(buf) == 1 then
+            vim.api.nvim_buf_call(buf, function()
+                vim.cmd("edit")
+            end)
+        end
+    end
+end, { desc = "Reload all open buffers" })
