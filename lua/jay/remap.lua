@@ -83,6 +83,11 @@ vim.keymap.set('n', '<leader>ta', ':tabnew<CR>', { silent = true })
 vim.keymap.set('n', '<leader>tp', ':tabp<CR>', { silent = true })
 vim.keymap.set('n', '<leader>tn', ':tabn<CR>', { silent = true })
 
-
 -- Zen mode
 vim.keymap.set('n', '<leader>z', ':ZenMode<CR>', { silent = true })
+
+-- Copy entire file's contents to clipboard
+vim.keymap.set("n", "<leader>Y", [[gg"+yG]])
+
+-- Paste from clipboard, replacing entire file's contents
+vim.keymap.set("n", "<leader>P", [[gg"_dG"+p]])
