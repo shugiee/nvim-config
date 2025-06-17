@@ -27,7 +27,13 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
 -- Replace current word
-vim.keymap.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("v", "<leader>sr", function()
+    vim.cmd([[normal! "zy]])
+    local search = vim.fn.escape(vim.fn.getreg("z"), [[\/]])
+    local cmd = string.format([[:%%s/\V%s/%s/gI]], search, search)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(cmd, true, false, true), 'c', true)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Left><Left><Left>', true, false, true), 'n', true)
+end, { desc = "Substitute selected text", silent = true })
 
 -- Make panes equal width
 vim.keymap.set("n", "<leader>eq", "<C-w>=")
