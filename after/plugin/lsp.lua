@@ -19,7 +19,8 @@ local lsp_attach = function(client, bufnr)
 end
 
 require("mason-lspconfig").setup {
-    ensure_installed = { "graphql", "cssls", "html", "lua_ls", "html" },
+    automatic_installation = true,
+    ensure_installed = { "graphql", "cssls", "html", "lua_ls" },
 }
 
 lsp_zero.extend_lspconfig({

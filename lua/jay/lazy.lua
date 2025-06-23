@@ -78,7 +78,7 @@ require("lazy").setup({
         end
     },
     { "hrsh7th/cmp-nvim-lsp" },
-    { "github/copilot.vim" },
+    -- { "github/copilot.vim" }, -- Disabled since it's breaking Lsp
     { "folke/todo-comments.nvim", opts = {} },
     {
         "folke/zen-mode.nvim",
