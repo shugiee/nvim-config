@@ -263,7 +263,7 @@ require("lazy").setup({
                 vim.api.nvim_create_user_command("RgIgnoreCaseFixedStringsExcludingTests", function(opts)
                     local query = opts.args
                     if query == "" then
-                        query = vim.fn.input("Rg (ignore case)> ")
+                        query = vim.fn.input("Rg (ignore case and tests)> ")
                         if query == "" then return end
                     end
 
