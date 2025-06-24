@@ -186,7 +186,7 @@ require("lazy").setup({
                 end
 
                 -- Create a custom command 'RgExact' that takes arguments.
-                vim.api.nvim_create_user_command("RgExact", function(opts)
+                vim.api.nvim_create_user_command("RgExactExcludingTests", function(opts)
                     local query = opts.args
                     if query == "" then
                         query = vim.fn.input("Rg (exact)> ")
@@ -198,7 +198,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                        "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' %s",
                         escaped_query, escaped_root_dir
                     )
 
@@ -210,11 +210,11 @@ require("lazy").setup({
                 }
                 )
 
-                -- Search for exact string match
+                -- Search for string match with regex
                 vim.api.nvim_create_user_command("Rg", function(opts)
                     local query = opts.args
                     if query == "" then
-                        query = vim.fn.input("Rg")
+                        query = vim.fn.input("Rg >")
                         if query == "" then return end
                     end
 
@@ -248,6 +248,31 @@ require("lazy").setup({
 
                     local cmd = string.format(
                         "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                        escaped_query, escaped_root_dir
+                    )
+
+                    vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
+                end, {
+                    nargs = "*",
+                    bang = true,
+                    desc = "Search with ripgrep ignoring case from project root",
+                }
+                )
+
+                -- Search for exact string match, case-insensitive, excluding test files
+                vim.api.nvim_create_user_command("RgIgnoreCaseFixedStringsExcludingTests", function(opts)
+                    local query = opts.args
+                    if query == "" then
+                        query = vim.fn.input("Rg (ignore case)> ")
+                        if query == "" then return end
+                    end
+
+                    local root_dir = get_project_root()
+                    local escaped_query = vim.fn.shellescape(query)
+                    local escaped_root_dir = vim.fn.shellescape(root_dir)
+
+                    local cmd = string.format(
+                        "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' %s",
                         escaped_query, escaped_root_dir
                     )
 

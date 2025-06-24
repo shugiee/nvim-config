@@ -62,8 +62,12 @@ vim.api.nvim_set_keymap(
 -- Search for text, project-wide, with regex
 vim.api.nvim_set_keymap("n", "<leader>fir", ":Rg<CR>", { noremap = true, silent = true })
 
--- Search for text, project-wide, without regex
-vim.api.nvim_set_keymap("n", "<leader>fif", ":RgIgnoreCaseFixedStrings<CR>", { noremap = true, silent = true })
+-- Search for text, project-wide, without regex, with tests included
+vim.api.nvim_set_keymap("n", "<leader>fift", ":RgIgnoreCaseFixedStrings<CR>", { noremap = true, silent = true })
+
+-- Search for text, project-wide, without regex, with tests excluded
+vim.api.nvim_set_keymap("n", "<leader>fif", ":RgIgnoreCaseFixedStringsExcludingTests<CR>",
+    { noremap = true, silent = true })
 
 -- Source config init.lua file
 vim.api.nvim_set_keymap("n", "<leader>so", ":luafile ~/.config/nvim/init.lua<CR>", { noremap = true, silent = true })
