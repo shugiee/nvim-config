@@ -63,7 +63,7 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap("n", "<leader>fir", ":Rg<CR>", { noremap = true, silent = true })
 
 -- Search for text, project-wide, without regex, with tests included
-vim.api.nvim_set_keymap("n", "<leader>fift", ":RgIgnoreCaseFixedStrings<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>fit", ":RgIgnoreCaseFixedStrings<CR>", { noremap = true, silent = true })
 
 -- Search for text, project-wide, without regex, with tests excluded
 vim.api.nvim_set_keymap("n", "<leader>fif", ":RgIgnoreCaseFixedStringsExcludingTests<CR>",
