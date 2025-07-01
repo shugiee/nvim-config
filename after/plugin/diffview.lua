@@ -8,11 +8,10 @@ vim.keymap.set("n", "<leader>bd", "<cmd>DiffviewFileHistory<CR>", { noremap = tr
 vim.keymap.set("n", "<leader>bh", "<cmd>DiffviewFileHistory %<CR>", { noremap = true, silent = true });
 
 -- See diff'd files between current branch and next-master
-vim.keymap.set("n", "<leader>diffmaster", [[:DiffviewOpen next-master..HEAD<CR>]])
+vim.keymap.set("n", "<leader>dm", [[:DiffviewOpen next-master..HEAD<CR>]])
 
 -- See diff'd files between current branch and parent branch
 vim.keymap.set('n', '<leader>gd', function()
     local parent = vim.fn.system('gt parent'):gsub('\n', '')
     vim.cmd('DiffviewOpen ' .. parent)
 end, { noremap = true, silent = true })
-
