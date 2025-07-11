@@ -308,5 +308,11 @@ require("lazy").setup({
         "chentoast/marks.nvim",
         event = "VeryLazy",
         opts = {},
+    },
+
+    -- Save sessions
+    {
+        'stevearc/resession.nvim',
+        opts = {},
     }
 })
