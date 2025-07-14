@@ -202,3 +202,14 @@ vim.keymap.set("n", "<leader>gs", function()
         print("File not found: " .. path)
     end
 end, { desc = "Open GraphQL schema file" })
+
+-- Focus popout
+vim.keymap.set("n", "<leader>fp", function()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local config = vim.api.nvim_win_get_config(win)
+        if config.relative ~= "" then
+            vim.api.nvim_set_current_win(win)
+            break
+        end
+    end
+end, { desc = "Focus popup window" })
