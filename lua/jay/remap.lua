@@ -41,6 +41,9 @@ vim.keymap.set("n", "<leader>eq", "<C-w>=")
 -- See history of recent files
 vim.keymap.set("n", "<leader>h", [[:History<CR>]])
 
+-- Ignore case with fzf
+vim.env.FZF_DEFAULT_OPTS = "--ignore-case"
+
 -- See commits affecting current file
 vim.api.nvim_set_keymap("n", "<leader>bc", ":BCommits<CR>", { noremap = true, silent = true })
 
