@@ -216,3 +216,6 @@ vim.keymap.set("n", "<leader>fp", function()
         end
     end
 end, { desc = "Focus popup window" })
+
+-- Paste at end of line
+vim.keymap.set("n", "P", "A<Esc>p", { desc = "Paste at end of line" })
