@@ -219,3 +219,6 @@ end, { desc = "Focus popup window" })
 
 -- Paste at end of line
 vim.keymap.set("n", "P", "A<Esc>p", { desc = "Paste at end of line" })
+
+-- Open floating terminal
+vim.keymap.set("n", "<leader>tt", ":Floaterminal<CR> A", { desc = "Open floating/popout terminal" })
