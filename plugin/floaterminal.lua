@@ -51,6 +51,9 @@ local toggle_terminal = function()
         end
     else
         vim.api.nvim_win_hide(state.floating.win)
+        vim.defer_fn(function()
+            vim.cmd('stopinsert')
+        end, 10)
     end
 end
 
