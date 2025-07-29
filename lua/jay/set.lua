@@ -115,19 +115,16 @@ vim.api.nvim_create_user_command("GenerateImports", function()
     local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 
     local generated_dirs = {}
-
     for _, line in ipairs(lines) do
         local import_path = line:match('%s*from%s+"([^"]+)"')
         if import_path and import_path:match("/generated/") then
             local dir = import_path:match("^(.-)/generated/")
             if dir then
-                local dir_relative_to_asana2 = "asana2/" .. dir
-                generated_dirs[dir_relative_to_asana2] = true -- use a set to avoid duplicates
+                generated_dirs["asana2/" .. dir] = true
             end
         end
     end
 
-    -- Build a single command with all the dirs
     local args = {}
     for dir, _ in pairs(generated_dirs) do
         table.insert(args, vim.fn.shellescape(dir))
@@ -139,13 +136,28 @@ vim.api.nvim_create_user_command("GenerateImports", function()
     end
 
     local cmd = "z editors codegen " .. table.concat(args, " ")
-    print("Running: " .. cmd)
+    print("Running in floating terminal: " .. cmd)
 
-    vim.fn.jobstart(cmd, {
-        stdout_buffered = true,
-        stderr_buffered = true,
+    -- Create a new buffer & floating window
+    local term_buf = vim.api.nvim_create_buf(false, true)
+    local width = math.floor(vim.o.columns * 0.8)
+    local height = math.floor(vim.o.lines * 0.8)
+    local col = math.floor((vim.o.columns - width) / 2)
+    local row = math.floor((vim.o.lines - height) / 2)
+    vim.api.nvim_open_win(term_buf, true, {
+        relative = "editor",
+        width = width,
+        height = height,
+        col = col,
+        row = row,
+        style = "minimal",
+        border = "rounded",
     })
-end, { desc = "Generated files!" })
+
+    -- Open terminal and run command
+    vim.fn.termopen(cmd)
+    vim.cmd.startinsert()
+end, { desc = "Generate codegen files in a floating terminal" })
 
 -- Generate imports
 vim.keymap.set("n", "<leader>gen", ":GenerateImports<CR>", { noremap = true, silent = true })
