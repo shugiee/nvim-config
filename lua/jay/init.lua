@@ -18,6 +18,8 @@ vim.opt.wildignore = {
     '*bazel*',
 }
 
+require('Comment').setup()
+
 
 -- FROM ChatGPT for aors.lua
 -- Autocmd to run CLI

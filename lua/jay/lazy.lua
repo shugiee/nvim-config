@@ -314,5 +314,10 @@ require("lazy").setup({
     {
         'stevearc/resession.nvim',
         opts = {},
+    },
+
+    {
+        'numToStr/Comment.nvim',
+        opts = {}
     }
 })
