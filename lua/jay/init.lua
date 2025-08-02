@@ -6,7 +6,6 @@ vim.env.FZF_DEFAULT_COMMAND =
 require("jay.lazy")
 require("jay.remap")
 require("jay.set")
--- require("jay.aors")
 
 vim.opt.wildignore = {
     '*/tmp/*',
