@@ -46,11 +46,6 @@ cmp.setup({
     mapping = cmp.mapping.preset.insert({}),
 })
 
-
-lsp_zero.setup({
-    capabilities = require('cmp_nvim_lsp').default_capabilities(),
-})
-
 -- Optional: custom server config
 lsp_zero.configure('lua_ls', {
     settings = {
@@ -61,4 +56,15 @@ lsp_zero.configure('lua_ls', {
             format = { enable = true }
         }
     }
+})
+
+lsp_zero.configure('graphql', {
+    filetypes = { "graphql", "javascript", "typescript", "typescriptreact" },
+    root_dir = require("lspconfig.util").root_pattern(
+        ".graphqlrc*", "graphql.config.*", "package.json"
+    ),
+})
+
+lsp_zero.setup({
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
