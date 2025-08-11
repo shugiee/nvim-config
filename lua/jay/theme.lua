@@ -1,10 +1,18 @@
+-- A lot of themes require true colors
+vim.opt.termguicolors = true
+
+local solarized = require('solarized')
+solarized.setup({
+    variant = "autumn"
+})
+
 local function set_theme(mode)
     if mode == "dark" then
         vim.o.background = "dark"
-        vim.cmd("colorscheme catppuccin-mocha") -- replace with your dark theme
+        vim.cmd("colorscheme catppuccin-mocha")
     else
         vim.o.background = "light"
-        vim.cmd("colorscheme catppuccin-latte") -- replace with your light theme
+        vim.cmd("colorscheme solarized")
     end
 end
 
@@ -42,9 +50,3 @@ local function detect_os_theme()
 end
 
 set_theme(detect_os_theme())
-
--- Old Color Schemes
--- vim.cmd.colorscheme('nordic')
--- vim.cmd.colorscheme('catppuccin')
--- vim.cmd.colorscheme('catppuccin-mocha')
--- vim.cmd.colorscheme('nord')

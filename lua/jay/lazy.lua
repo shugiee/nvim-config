@@ -319,5 +319,9 @@ require("lazy").setup({
     {
         'numToStr/Comment.nvim',
         opts = {}
+    },
+
+    {
+        'maxmx03/solarized.nvim',
     }
 })
