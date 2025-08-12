@@ -94,4 +94,4 @@ vim.keymap.set('n', '<leader>z', ':ZenMode<CR>', { silent = true })
 vim.keymap.set("n", "<leader>Y", [[gg"+yG]])
 
 -- Paste from clipboard, replacing entire file's contents
-vim.keymap.set("n", "<leader>P", [[gg"_dG"+p]])
+vim.keymap.set("n", "<leader>R", [[gg"_dG"+p]])

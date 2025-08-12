@@ -7,6 +7,7 @@ require("jay.lazy")
 require("jay.remap")
 require("jay.set")
 require("jay.theme")
+require("jay.ui")
 
 vim.opt.wildignore = {
     '*/tmp/*',
