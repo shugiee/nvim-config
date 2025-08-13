@@ -1,8 +1,7 @@
 ---
 -- LSP configuration
 ---
-local lspconfig = require('lspconfig')
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local lsp_zero = require('lsp-zero')
 
 local lsp_attach = function(client, bufnr)
     local opts = { buffer = bufnr }
@@ -21,38 +20,20 @@ end
 
 require("mason-lspconfig").setup {
     automatic_installation = true,
-    ensure_installed = { "graphql", "cssls", "html", "lua_ls" },
+    ensure_installed = { "graphql", "cssls", "html", "lua_ls", "ts_ls" },
 }
 
--- Configure LSP signs
-local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
-for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
--- C/C++
-lspconfig.clangd.setup({
-    capabilities = capabilities,
-    on_attach = lsp_attach,
+lsp_zero.extend_lspconfig({
+    sign_text = true,
+    lsp_attach = lsp_attach,
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
 
--- Python
-lspconfig.pyright.setup({
-    capabilities = capabilities,
-    on_attach = lsp_attach,
-})
-
--- HTML
-lspconfig.html.setup({
-    capabilities = capabilities,
-    on_attach = lsp_attach,
-})
-
--- Lua
+local lspconfig = require('lspconfig')
+lspconfig.clangd.setup({})
+lspconfig.pyright.setup({})
+lspconfig.html.setup({})
 lspconfig.lua_ls.setup({
-    capabilities = capabilities,
-    on_attach = lsp_attach,
     settings = {
         Lua = {
             format = {
@@ -65,33 +46,26 @@ lspconfig.lua_ls.setup({
     },
 })
 
--- GraphQL
+-- This isn't working yet
 lspconfig.graphql.setup({
-    capabilities = capabilities,
-    on_attach = lsp_attach,
     filetypes = { "graphql", "javascript", "typescript", "typescriptreact" },
     root_dir = require("lspconfig.util").root_pattern(".graphqlrc*", "graphql.config.*", "package.json"),
 })
 
--- TypeScript/JavaScript
+-- Make sure TS uses only one root tsconfig file
 lspconfig.ts_ls.setup({
-    capabilities = capabilities,
-    on_attach = function(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
-        lsp_attach(client, bufnr)
-    end,
     init_options = {
         maxTsServerMemory = 24576, -- Set memory limit to 24GB
         preferences = {
             preserveSymlinks = true
         },
     },
+    on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = false
+    end,
 })
 
--- CSS
 lspconfig.cssls.setup({
-    capabilities = capabilities,
-    on_attach = lsp_attach,
     settings = {
         css = { validate = true },
         scss = { validate = true },
