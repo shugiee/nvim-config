@@ -118,7 +118,7 @@ require("lazy").setup({
                         winbar_info = false,
                     },
                     merge_tool = {
-                        layout = "diff3_horizontal",
+                        layout = "diff3_mixed",
                         disable_diagnostics = true,
                         winbar_info = true,
                     },
