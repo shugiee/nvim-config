@@ -21,7 +21,6 @@ vim.keymap.set("n", "Q", "<nop>")
 
 -- Easily copy to real clipboard
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 -- Use tmux to easily jump between projects
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")

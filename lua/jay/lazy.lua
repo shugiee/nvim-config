@@ -44,7 +44,6 @@ require("lazy").setup({
     },
     { "mbbill/undotree" },
     { "tpope/vim-fugitive" },
-    { "VonHeikemen/lsp-zero.nvim" },
     {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
@@ -78,7 +77,7 @@ require("lazy").setup({
         end
     },
     { "hrsh7th/cmp-nvim-lsp" },
-    -- { "github/copilot.vim" }, -- Disabled since it's breaking Lsp
+    { "github/copilot.vim" },
     { "folke/todo-comments.nvim", opts = {} },
     {
         "folke/zen-mode.nvim",
@@ -291,9 +290,8 @@ require("lazy").setup({
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            { "williamboman/mason.nvim",           config = true },
-            { "williamboman/mason-lspconfig.nvim", config = true },
-            { "VonHeikemen/lsp-zero.nvim" },
+            { "williamboman/mason.nvim", config = true },
+            { "williamboman/mason-lspconfig.nvim" },
         },
     },
 
