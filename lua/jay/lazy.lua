@@ -290,8 +290,8 @@ require("lazy").setup({
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            { "williamboman/mason.nvim", config = true },
-            { "williamboman/mason-lspconfig.nvim" },
+            { "williamboman/mason.nvim",           config = true },
+            { "williamboman/mason-lspconfig.nvim", enabled = false },
         },
     },
 

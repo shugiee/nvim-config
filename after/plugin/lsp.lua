@@ -19,14 +19,7 @@ local lsp_attach = function(client, bufnr)
     vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 end
 
-require("mason-lspconfig").setup {
-    automatic_installation = true,
-    ensure_installed = { "graphql", "cssls", "html", "lua_ls" },
-    handlers = {
-        -- Disable automatic setup for ts_ls since we configure it manually
-        ts_ls = function() end,
-    }
-}
+
 
 -- Configure LSP signs
 local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
