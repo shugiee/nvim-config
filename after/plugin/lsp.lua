@@ -4,6 +4,37 @@
 local lspconfig = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
+-- Configure LSP popup window borders
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+    border = "rounded",
+    max_width = 80,
+    max_height = 30,
+})
+
+-- Alternative approach - override the default window config
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+    opts = opts or {}
+    opts.border = opts.border or "rounded"
+    return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    border = "rounded",
+    max_width = 80,
+    max_height = 30,
+})
+
+-- Configure diagnostic popups with borders
+vim.diagnostic.config({
+    float = {
+        border = "rounded",
+        source = "always",
+        header = "",
+        prefix = "",
+    },
+})
+
 local lsp_attach = function(client, bufnr)
     local opts = { buffer = bufnr }
 
@@ -135,4 +166,8 @@ cmp.setup({
         end,
     },
     mapping = cmp.mapping.preset.insert({}),
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
 })
