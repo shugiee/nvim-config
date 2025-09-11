@@ -197,7 +197,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' --glob '!**/*.json' %s",
+                        "rg --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' --glob '!**/*.json' %s",
                         escaped_query, escaped_root_dir
                     )
 
@@ -222,7 +222,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                        "rg --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
                         escaped_query, escaped_root_dir
                     )
                     vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
@@ -246,7 +246,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                        "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
                         escaped_query, escaped_root_dir
                     )
 
@@ -271,7 +271,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' %s",
+                        "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' %s",
                         escaped_query, escaped_root_dir
                     )
 
