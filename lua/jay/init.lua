@@ -31,3 +31,13 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 
 -- Set custom statusline
 vim.o.statusline = "%f %h%m%r%=%-14.(%l,%c%V%) %P %{v:lua.require'jay.aors'.statusline_component()}"
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "c", "h" },
+    callback = function()
+        vim.bo.tabstop = 4
+        vim.bo.shiftwidth = 4
+        vim.bo.softtabstop = 4
+        vim.bo.expandtab = true
+    end,
+})
