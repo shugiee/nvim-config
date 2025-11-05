@@ -68,6 +68,22 @@ vim.api.nvim_set_keymap("n", "<leader>fit", ":RgIgnoreCaseFixedStrings<CR>", { n
 vim.api.nvim_set_keymap("n", "<leader>fif", ":RgIgnoreCaseFixedStringsExcludingTests<CR>",
     { noremap = true, silent = true })
 
+-- Search for files that import the current file
+vim.keymap.set("n", "<leader>imp", function()
+    local filepath = vim.api.nvim_buf_get_name(0)
+    local relative_path = vim.fn.fnamemodify(filepath, ":.")
+
+    -- Remove leading "asana2/" if present
+    relative_path = relative_path:gsub("^asana2/", "")
+
+    -- Remove file extension
+    relative_path = relative_path:gsub("%.[^.]+$", "")
+
+    -- Construct search pattern and execute with fixed string search
+    local search_pattern = 'from "' .. relative_path .. '";'
+    vim.fn.feedkeys(":RgIgnoreCaseFixedStringsExcludingTests " .. search_pattern .. "\n", "n")
+end, { desc = "Find imports of current file", silent = true })
+
 -- Source config init.lua file
 vim.api.nvim_set_keymap("n", "<leader>so", ":luafile ~/.config/nvim/init.lua<CR>", { noremap = true, silent = true })
 
