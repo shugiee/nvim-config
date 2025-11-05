@@ -1,7 +1,6 @@
 ---
 -- LSP configuration
 ---
-local lspconfig = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Configure LSP popup window borders
@@ -60,25 +59,25 @@ for type, icon in pairs(signs) do
 end
 
 -- C/C++
-lspconfig.clangd.setup({
+vim.lsp.config('clangd', {
     capabilities = capabilities,
     on_attach = lsp_attach,
 })
 
 -- Python
-lspconfig.pyright.setup({
+vim.lsp.config('pyright', {
     capabilities = capabilities,
     on_attach = lsp_attach,
 })
 
 -- HTML
-lspconfig.html.setup({
+vim.lsp.config('html', {
     capabilities = capabilities,
     on_attach = lsp_attach,
 })
 
 -- Lua
-lspconfig.lua_ls.setup({
+vim.lsp.config('lua_ls', {
     capabilities = capabilities,
     on_attach = lsp_attach,
     settings = {
@@ -94,7 +93,7 @@ lspconfig.lua_ls.setup({
 })
 
 -- GraphQL
-lspconfig.graphql.setup({
+vim.lsp.config('graphql', {
     capabilities = capabilities,
     on_attach = lsp_attach,
     filetypes = { "typescript" },
@@ -109,7 +108,7 @@ lspconfig.graphql.setup({
 })
 
 -- TypeScript/JavaScript
-lspconfig.ts_ls.setup({
+vim.lsp.config('ts_ls', {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
@@ -127,7 +126,7 @@ lspconfig.ts_ls.setup({
 })
 
 -- CSS
-lspconfig.cssls.setup({
+vim.lsp.config('cssls', {
     capabilities = capabilities,
     on_attach = lsp_attach,
     settings = {
