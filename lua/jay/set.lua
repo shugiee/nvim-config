@@ -25,6 +25,9 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
+-- Disable automatic line breaking
+vim.opt.textwidth = 0
+
 -- Hide whitespace in git diffs
 vim.opt.diffopt:append("iwhite")
 
