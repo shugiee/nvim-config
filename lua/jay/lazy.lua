@@ -258,7 +258,7 @@ require("lazy").setup({
                 }
                 )
 
-                -- Search for exact string match, case-insensitive, excluding test files
+                -- Search for exact string match, case-insensitive, excluding test files (sends to quickfix)
                 vim.api.nvim_create_user_command("RgIgnoreCaseFixedStringsExcludingTests", function(opts)
                     local query = opts.args
                     if query == "" then
@@ -267,19 +267,21 @@ require("lazy").setup({
                     end
 
                     local root_dir = get_project_root()
-                    local escaped_query = vim.fn.shellescape(query)
-                    local escaped_root_dir = vim.fn.shellescape(root_dir)
 
+                    -- Run ripgrep and capture output
                     local cmd = string.format(
-                        "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' %s",
-                        escaped_query, escaped_root_dir
+                        "rg --vimgrep --ignore-case --fixed-strings %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' %s",
+                        vim.fn.shellescape(query), vim.fn.shellescape(root_dir)
                     )
 
-                    vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
+                    -- Execute and populate quickfix
+                    vim.fn.setqflist({}, 'r')  -- Clear quickfix list
+                    vim.cmd('cexpr system("' .. cmd:gsub('"', '\\"') .. '")')
+                    vim.cmd('copen')  -- Open quickfix window
                 end, {
                     nargs = "*",
                     bang = true,
-                    desc = "Search with ripgrep ignoring case from project root",
+                    desc = "Search with ripgrep and send to quickfix",
                 }
                 )
             end
