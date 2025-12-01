@@ -209,7 +209,7 @@ require("lazy").setup({
                 }
                 )
 
-                -- Search for string match with regex
+                -- Search for string match with regex (FZF with Ctrl-Q to send to quickfix)
                 vim.api.nvim_create_user_command("Rg", function(opts)
                     local query = opts.args
                     if query == "" then
@@ -225,15 +225,50 @@ require("lazy").setup({
                         "rg --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
                         escaped_query, escaped_root_dir
                     )
-                    vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
+
+                    -- Add Ctrl-Q to send all results to quickfix using --expect
+                    local spec = vim.fn["fzf#vim#with_preview"]()
+                    spec.options = spec.options or {}
+                    table.insert(spec.options, '--expect=ctrl-q')
+
+                    -- Custom sink to handle quickfix population
+                    spec['sink*'] = function(lines)
+                        local key = table.remove(lines, 1)
+                        if key == 'ctrl-q' then
+                            -- Send all results to quickfix
+                            local qf_cmd = string.format(
+                                "rg --vimgrep %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                                escaped_query, escaped_root_dir
+                            )
+                            vim.fn.setqflist({}, 'r')
+                            vim.cmd('cexpr system("' .. qf_cmd:gsub('"', '\\"') .. '")')
+                            vim.cmd('copen')
+                        elseif #lines > 0 then
+                            -- Parse the first selected line and open the file
+                            local line = lines[1]
+                            if line then
+                                -- Parse format: filename:line:column:content
+                                local parts = vim.split(line, ':')
+                                if #parts >= 3 then
+                                    local file = parts[1]
+                                    local lnum = parts[2]
+                                    local col = parts[3]
+                                    vim.cmd('edit ' .. vim.fn.fnameescape(file))
+                                    vim.fn.cursor(tonumber(lnum), tonumber(col))
+                                end
+                            end
+                        end
+                    end
+
+                    vim.fn["fzf#vim#grep"](cmd, 1, spec, opts.bang and 1 or 0)
                 end, {
                     nargs = "*",
                     bang = true,
-                    desc = "Search with ripgrep ignoring case from project root",
+                    desc = "Search with ripgrep (Ctrl-Q for quickfix)",
                 }
                 )
 
-                -- Search for exact string match, case-insensitive
+                -- Search for exact string match, case-insensitive (FZF with Ctrl-Q to send to quickfix)
                 vim.api.nvim_create_user_command("RgIgnoreCaseFixedStrings", function(opts)
                     local query = opts.args
                     if query == "" then
@@ -246,19 +281,53 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --ignore-case  --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                        "rg --ignore-case --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
                         escaped_query, escaped_root_dir
                     )
 
-                    vim.fn["fzf#vim#grep"](cmd, 1, vim.fn["fzf#vim#with_preview"](), opts.bang and 1 or 0)
+                    -- Add Ctrl-Q to send all results to quickfix using --expect
+                    local spec = vim.fn["fzf#vim#with_preview"]()
+                    spec.options = spec.options or {}
+                    table.insert(spec.options, '--expect=ctrl-q')
+
+                    -- Custom sink to handle quickfix population
+                    spec['sink*'] = function(lines)
+                        local key = table.remove(lines, 1)
+                        if key == 'ctrl-q' then
+                            -- Send all results to quickfix
+                            local qf_cmd = string.format(
+                                "rg --vimgrep --ignore-case --fixed-strings %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                                escaped_query, escaped_root_dir
+                            )
+                            vim.fn.setqflist({}, 'r')
+                            vim.cmd('cexpr system("' .. qf_cmd:gsub('"', '\\"') .. '")')
+                            vim.cmd('copen')
+                        elseif #lines > 0 then
+                            -- Parse the first selected line and open the file
+                            local line = lines[1]
+                            if line then
+                                -- Parse format: filename:line:column:content
+                                local parts = vim.split(line, ':')
+                                if #parts >= 3 then
+                                    local file = parts[1]
+                                    local lnum = parts[2]
+                                    local col = parts[3]
+                                    vim.cmd('edit ' .. vim.fn.fnameescape(file))
+                                    vim.fn.cursor(tonumber(lnum), tonumber(col))
+                                end
+                            end
+                        end
+                    end
+
+                    vim.fn["fzf#vim#grep"](cmd, 1, spec, opts.bang and 1 or 0)
                 end, {
                     nargs = "*",
                     bang = true,
-                    desc = "Search with ripgrep ignoring case from project root",
+                    desc = "Search with ripgrep (Ctrl-Q for quickfix)",
                 }
                 )
 
-                -- Search for exact string match, case-insensitive, excluding test files (sends to quickfix)
+                -- Search for exact string match, case-insensitive, excluding test files (FZF with Ctrl-Q to send to quickfix)
                 vim.api.nvim_create_user_command("RgIgnoreCaseFixedStringsExcludingTests", function(opts)
                     local query = opts.args
                     if query == "" then
@@ -267,21 +336,53 @@ require("lazy").setup({
                     end
 
                     local root_dir = get_project_root()
+                    local escaped_query = vim.fn.shellescape(query)
+                    local escaped_root_dir = vim.fn.shellescape(root_dir)
 
-                    -- Run ripgrep and capture output
                     local cmd = string.format(
-                        "rg --vimgrep --ignore-case --fixed-strings %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' %s",
-                        vim.fn.shellescape(query), vim.fn.shellescape(root_dir)
+                        "rg --ignore-case --fixed-strings --color=always --line-number --column --no-heading %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' %s",
+                        escaped_query, escaped_root_dir
                     )
 
-                    -- Execute and populate quickfix
-                    vim.fn.setqflist({}, 'r')  -- Clear quickfix list
-                    vim.cmd('cexpr system("' .. cmd:gsub('"', '\\"') .. '")')
-                    vim.cmd('copen')  -- Open quickfix window
+                    -- Add Ctrl-Q to send all results to quickfix using --expect
+                    local spec = vim.fn["fzf#vim#with_preview"]()
+                    spec.options = spec.options or {}
+                    table.insert(spec.options, '--expect=ctrl-q')
+
+                    -- Custom sink to handle quickfix population
+                    spec['sink*'] = function(lines)
+                        local key = table.remove(lines, 1)
+                        if key == 'ctrl-q' then
+                            -- Send all results to quickfix
+                            local qf_cmd = string.format(
+                                "rg --vimgrep --ignore-case --fixed-strings %s -g '*' --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' %s",
+                                escaped_query, escaped_root_dir
+                            )
+                            vim.fn.setqflist({}, 'r')
+                            vim.cmd('cexpr system("' .. qf_cmd:gsub('"', '\\"') .. '")')
+                            vim.cmd('copen')
+                        elseif #lines > 0 then
+                            -- Parse the first selected line and open the file
+                            local line = lines[1]
+                            if line then
+                                -- Parse format: filename:line:column:content
+                                local parts = vim.split(line, ':')
+                                if #parts >= 3 then
+                                    local file = parts[1]
+                                    local lnum = parts[2]
+                                    local col = parts[3]
+                                    vim.cmd('edit ' .. vim.fn.fnameescape(file))
+                                    vim.fn.cursor(tonumber(lnum), tonumber(col))
+                                end
+                            end
+                        end
+                    end
+
+                    vim.fn["fzf#vim#grep"](cmd, 1, spec, opts.bang and 1 or 0)
                 end, {
                     nargs = "*",
                     bang = true,
-                    desc = "Search with ripgrep and send to quickfix",
+                    desc = "Search with ripgrep (Ctrl-Q for quickfix)",
                 }
                 )
             end
