@@ -172,20 +172,6 @@ vim.keymap.set("n", "<leader>ma", ":MarksListAll<CR>", { noremap = true, silent 
 -- Clear marks
 vim.keymap.set("n", "<leader>delmarks", ":delmarks A-Z0-9<CR>", { noremap = true, silent = true })
 
--- Run cli command
-vim.keymap.set("n", "<leader>r", function()
-    local command = vim.fn.input("Command: ")
-    if command ~= "" then
-        local output = vim.fn.system(command)
-        local lines = vim.split(output, "\n")
-        if #lines > 0 then
-            show_output("Command Output", lines)
-        else
-            print("No output from command.")
-        end
-    end
-end, { noremap = true, silent = true })
-
 vim.cmd([[
   highlight DiffChange guibg=#334143 guifg=NONE gui=NONE
   highlight DiffText   guibg=#576f73 guifg=NONE gui=NONE

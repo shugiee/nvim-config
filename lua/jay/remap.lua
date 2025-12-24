@@ -80,7 +80,7 @@ vim.keymap.set("n", "<leader>imp", function()
     relative_path = relative_path:gsub("%.[^.]+$", "")
 
     -- Construct search pattern and execute with fixed string search
-    local search_pattern = 'from "' .. relative_path .. '";'
+    local search_pattern = relative_path .. '";'
     vim.fn.feedkeys(":RgIgnoreCaseFixedStringsExcludingTests " .. search_pattern .. "\n", "n")
 end, { desc = "Find imports of current file", silent = true })
 
