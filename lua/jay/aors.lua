@@ -1,6 +1,6 @@
 local M = {}
 
--- Cache output per buffer
+-- Cache output per buffer (stores { display = "...", url = "..." })
 local buf_info = {}
 
 -- Run your CLI when a buffer is opened
@@ -19,16 +19,16 @@ function M.on_buf_open(bufnr)
                 aor_owner = aor_owner or ""
                 aor_url = aor_url or ""
 
-                -- Show both AOR name and URL
-                buf_info[bufnr] = "AOR: " .. aor_name .. " Owner: " .. aor_owner
-
-                -- Store the URL as a global variable
-                vim.g.aor_url = aor_url
+                -- Store both display text and URL per buffer
+                buf_info[bufnr] = {
+                    display = "AOR",  -- Just show "AOR" indicator
+                    url = aor_url
+                }
 
                 -- Force statusline redraw
                 vim.api.nvim_command("redrawstatus")
             else
-                buf_info[bufnr] = "[CLI Error]"
+                buf_info[bufnr] = { display = "[CLI Error]", url = nil }
             end
         end)
     end)
@@ -49,16 +49,19 @@ end
 -- Add info to statusline
 function M.statusline_component()
     local bufnr = vim.api.nvim_get_current_buf()
-    return buf_info[bufnr] and ("  " .. buf_info[bufnr]) or ""
+    local info = buf_info[bufnr]
+    return info and ("  " .. info.display) or ""
 end
 
 -- Open the AOR URL in the browser
 function M.open_aor_url()
-    local aor_url = vim.g.aor_url
-    if aor_url then
+    local bufnr = vim.api.nvim_get_current_buf()
+    local info = buf_info[bufnr]
+    local aor_url = info and info.url
+    if aor_url and aor_url ~= "" then
         vim.fn.system({ "open", aor_url })
     else
-        print("No AOR URL found.")
+        print("No AOR URL found for this buffer.")
     end
 end
 
