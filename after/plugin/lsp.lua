@@ -10,12 +10,25 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     max_height = 30,
 })
 
--- Alternative approach - override the default window config
+-- Override floating preview to add padding and rounded borders
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
     opts = opts or {}
     opts.border = opts.border or "rounded"
-    return orig_util_open_floating_preview(contents, syntax, opts, ...)
+
+    -- Add vertical padding (~10px = 2 lines top/bottom)
+    -- Note: horizontal padding breaks markdown code fence rendering
+    local padded_contents = { "", "" } -- top padding
+
+    for _, line in ipairs(contents) do
+        table.insert(padded_contents, line)
+    end
+
+    -- bottom padding
+    table.insert(padded_contents, "")
+    table.insert(padded_contents, "")
+
+    return orig_util_open_floating_preview(padded_contents, syntax, opts, ...)
 end
 
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
