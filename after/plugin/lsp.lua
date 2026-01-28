@@ -120,16 +120,24 @@ vim.lsp.config('graphql', {
     }
 })
 
--- TypeScript/JavaScript (using tsgo)
-vim.lsp.config('tsgo', {
+-- TypeScript/JavaScript
+-- Use root_markers instead of root_dir for the new API
+-- This will look for .git in the asana directory
+vim.lsp.config('ts_ls', {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
         lsp_attach(client, bufnr)
     end,
-    cmd = { "tsgo", "--lsp", "--stdio" },
+    cmd = { "typescript-language-server", "--stdio" },
     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-    root_markers = { ".git", "tsconfig.json", "package.json" },
+    root_markers = { ".git" },
+    init_options = {
+        maxTsServerMemory = 24576, -- Set memory limit to 24GB
+        preferences = {
+            preserveSymlinks = true
+        },
+    },
 })
 
 -- CSS
@@ -161,7 +169,7 @@ vim.lsp.enable('pyright')
 vim.lsp.enable('html')
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('graphql')
-vim.lsp.enable('tsgo')
+vim.lsp.enable('ts_ls')
 vim.lsp.enable('cssls')
 
 
