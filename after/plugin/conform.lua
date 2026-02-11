@@ -4,22 +4,15 @@ require("conform").setup({
         lsp_format = "fallback",
     },
     formatters_by_ft = {
-        javascript = { "prettier" },
-        typescript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescriptreact = { "prettier" },
-        json = { "prettier" },
+        javascript = { "biome" },
+        typescript = { "biome" },
+        javascriptreact = { "biome" },
+        typescriptreact = { "biome" },
+        json = { "biome" },
+        css = { "biome" },
         yaml = { "prettier" },
         html = { "prettier" },
-        css = { "prettier" },
         markdown = { "prettier" },
         lua = { "lsp" },
-    },
-    formatters = {
-        prettier = {
-            prepend_args = {
-                "--config", vim.fn.expand("/Users/jonathanolson/sandbox/asana/asana2/.prettierrc.json")
-            },
-        },
     },
 })
