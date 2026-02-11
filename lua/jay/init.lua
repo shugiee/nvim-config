@@ -20,17 +20,8 @@ vim.opt.wildignore = {
 
 require('Comment').setup()
 
-
--- FROM ChatGPT for aors.lua
--- Autocmd to run CLI
-vim.api.nvim_create_autocmd("BufReadPost", {
-    callback = function(args)
-        require("jay.aors").on_buf_open(args.buf)
-    end,
-})
-
 -- Set custom statusline
-vim.o.statusline = "%f %h%m%r%=%-14.(%l,%c%V%) %P %{v:lua.require'jay.aors'.statusline_component()}"
+vim.o.statusline = "%f %h%m%r%=%-14.(%l,%c%V%) %P}"
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "c", "h" },
