@@ -110,3 +110,22 @@ vim.keymap.set("n", "<leader>Y", [[gg"+yG]])
 
 -- Paste from clipboard, replacing entire file's contents
 vim.keymap.set("n", "<leader>R", [[gg"_dG"+p]])
+
+-- Show man page for word under cursor in floating window
+vim.keymap.set("n", "<leader>m", function()
+    local word = vim.fn.expand("<cword>")
+    local output = vim.fn.systemlist("man " .. vim.fn.shellescape(word) .. " 2>/dev/null | col -bx")
+    if vim.v.shell_error ~= 0 then
+        vim.notify("No man page for: " .. word, vim.log.levels.WARN)
+        return
+    end
+    while #output > 0 and output[1] == "" do
+        table.remove(output, 1)
+    end
+    vim.lsp.util.open_floating_preview(output, "man", {
+        border = "rounded",
+        max_width = 80,
+        max_height = 40,
+        focus_id = "man_page",
+    })
+end, { desc = "Show man page for word under cursor", silent = true })
