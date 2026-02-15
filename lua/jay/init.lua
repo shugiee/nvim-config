@@ -21,7 +21,7 @@ vim.opt.wildignore = {
 require('Comment').setup()
 
 -- Set custom statusline
-vim.o.statusline = "%f %h%m%r%=%-14.(%l,%c%V%) %P}"
+vim.o.statusline = "%f %h%m%r%=%-14.(%l,%c%V%) %P"
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "c", "h" },
