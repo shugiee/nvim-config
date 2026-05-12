@@ -98,6 +98,35 @@ vim.keymap.set('n', '<leader>ta', ':tabnew<CR>', { silent = true })
 vim.keymap.set('n', '<leader>tp', ':tabp<CR>', { silent = true })
 vim.keymap.set('n', '<leader>tn', ':tabn<CR>', { silent = true })
 
+-- Close buffers that are not visible in any tab
+vim.keymap.set("n", "<leader>bc", function()
+    local visible_buffers = {}
+    for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+            visible_buffers[vim.api.nvim_win_get_buf(win)] = true
+        end
+    end
+
+    local closed = 0
+    local skipped = 0
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) and vim.fn.buflisted(buf) == 1 and not visible_buffers[buf] then
+            local ok = pcall(vim.api.nvim_buf_delete, buf, { force = false })
+            if ok then
+                closed = closed + 1
+            else
+                skipped = skipped + 1
+            end
+        end
+    end
+
+    local message = "Closed " .. closed .. " hidden buffer" .. (closed == 1 and "" or "s")
+    if skipped > 0 then
+        message = message .. "; skipped " .. skipped .. " modified"
+    end
+    vim.notify(message)
+end, { desc = "Close hidden buffers", silent = true })
+
 -- Zen mode
 vim.keymap.set('n', '<leader>z', ':ZenMode<CR>', { silent = true })
 

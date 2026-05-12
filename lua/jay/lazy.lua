@@ -282,6 +282,192 @@ require("lazy").setup({
                 },
                 signs_placement = "left",
             })
+
+            -- Diffview's merge winbar only shows hashes by default; add commit subjects.
+            do
+                local GitAdapter = require('diffview.vcs.adapters.git').GitAdapter
+                local FileEntry = require('diffview.scene.file_entry').FileEntry
+                local RevType = require('diffview.vcs.rev').RevType
+                local Window = require('diffview.scene.window').Window
+                local path = require('plenary.path')
+
+                if not GitAdapter._jay_merge_subjects_patched then
+                    GitAdapter._jay_merge_subjects_patched = true
+
+                    local original_get_merge_context = GitAdapter.get_merge_context
+                    GitAdapter.get_merge_context = function(self)
+                        local ctx = original_get_merge_context(self)
+                        if not ctx then
+                            return ctx
+                        end
+
+                        local function add_subject(name, rev)
+                            local out, code = self:exec_sync({ 'show', '-s', '--pretty=format:%s', rev, '--' }, self.ctx.toplevel)
+                            if code == 0 and out[1] and out[1] ~= '' then
+                                ctx[name].subject = out[1]
+                            end
+                        end
+
+                        local theirs_rev
+                        for _, rev in ipairs({ 'MERGE_HEAD', 'REBASE_HEAD', 'REVERT_HEAD', 'CHERRY_PICK_HEAD' }) do
+                            if path:new(self.ctx.dir, rev):exists() then
+                                theirs_rev = rev
+                                break
+                            end
+                        end
+
+                        add_subject('ours', 'HEAD')
+                        if theirs_rev then
+                            add_subject('theirs', theirs_rev)
+                        end
+
+                        if ctx.base and ctx.base.hash then
+                            add_subject('base', ctx.base.hash)
+                        end
+
+                        return ctx
+                    end
+                end
+
+                if not FileEntry._jay_merge_subjects_patched then
+                    FileEntry._jay_merge_subjects_patched = true
+
+                    local original_update_merge_context = FileEntry.update_merge_context
+                    FileEntry.update_merge_context = function(self, ctx)
+                        original_update_merge_context(self, ctx)
+
+                        ctx = ctx or self.merge_ctx
+                        if not ctx then
+                            return
+                        end
+
+                        local layout = self.layout
+                        local function format_winbar(label, info)
+                            if not info then
+                                return label
+                            end
+
+                            local parts = { label }
+
+                            if info.subject and info.subject ~= '' then
+                                table.insert(parts, info.subject)
+                            end
+
+                            if info.hash and info.hash ~= '' then
+                                table.insert(parts, '(' .. info.hash:sub(1, 10) .. ')')
+                            end
+
+                            return ' ' .. table.concat(parts, ' ')
+                        end
+
+                        if layout.a then
+                            layout.a.file.winbar = format_winbar('OURS (Current changes)', ctx.ours)
+                        end
+
+                        if layout.c then
+                            layout.c.file.winbar = format_winbar('THEIRS (Incoming changes)', ctx.theirs)
+                        end
+
+                        if layout.d then
+                            layout.d.file.winbar = format_winbar('BASE (Common ancestor)', ctx.base)
+                        end
+                    end
+                end
+
+                if not Window._jay_merge_subjects_patched then
+                    Window._jay_merge_subjects_patched = true
+
+                    local function git_show(adapter, rev)
+                        local out, code = adapter:exec_sync({ 'show', '-s', '--pretty=format:%s%n%D%n%H', rev, '--' }, adapter.ctx.toplevel)
+                        if code ~= 0 then
+                            return nil
+                        end
+
+                        return {
+                            subject = out[1],
+                            ref_names = out[2],
+                            hash = out[3],
+                        }
+                    end
+
+                    local function get_theirs_rev(adapter)
+                        for _, rev in ipairs({ 'MERGE_HEAD', 'REBASE_HEAD', 'REVERT_HEAD', 'CHERRY_PICK_HEAD' }) do
+                            if path:new(adapter.ctx.dir, rev):exists() then
+                                return rev
+                            end
+                        end
+                    end
+
+                    local function get_stage_info(file)
+                        local adapter = file.adapter
+                        local stage = file.rev.stage
+
+                        if stage == 1 then
+                            local theirs_rev = get_theirs_rev(adapter)
+                            if not theirs_rev then
+                                return 'BASE (Common ancestor)', nil
+                            end
+
+                            local base_hash = adapter:exec_sync({ 'merge-base', 'HEAD', theirs_rev }, adapter.ctx.toplevel)[1]
+                            return 'BASE (Common ancestor)', base_hash and git_show(adapter, base_hash) or nil
+                        end
+
+                        if stage == 2 then
+                            return 'OURS (Current changes)', git_show(adapter, 'HEAD')
+                        end
+
+                        if stage == 3 then
+                            local theirs_rev = get_theirs_rev(adapter)
+                            return 'THEIRS (Incoming changes)', theirs_rev and git_show(adapter, theirs_rev) or nil
+                        end
+                    end
+
+                    local function format_winbar(label, info)
+                        local parts = { label }
+
+                        if info and info.subject and info.subject ~= '' then
+                            table.insert(parts, info.subject)
+                        end
+
+                        local details = {}
+                        if info and info.ref_names and info.ref_names ~= '' then
+                            table.insert(details, info.ref_names)
+                        end
+
+                        if info and info.hash and info.hash ~= '' then
+                            table.insert(details, info.hash:sub(1, 10))
+                        end
+
+                        if #details > 0 then
+                            table.insert(parts, '(' .. table.concat(details, '; ') .. ')')
+                        end
+
+                        return ' ' .. table.concat(parts, ' ')
+                    end
+
+                    local original_post_open = Window.post_open
+                    Window.post_open = function(self)
+                        original_post_open(self)
+
+                        if not (self:is_valid() and self.file and self:show_winbar_info()) then
+                            return
+                        end
+
+                        if self.file.kind ~= 'conflicting' or self.file.rev.type ~= RevType.STAGE then
+                            return
+                        end
+
+                        local label, info = get_stage_info(self.file)
+                        if not label then
+                            return
+                        end
+
+                        local winbar = format_winbar(label, info)
+                        self.file.winbar = winbar
+                        vim.wo[self.id].winbar = winbar
+                    end
+                end
+            end
         end
     },
 
