@@ -735,7 +735,7 @@ require("lazy").setup({
                     typescript = { 'prettier' },
                     javascriptreact = { 'prettier' },
                     typescriptreact = { 'prettier' },
-                    json = { 'prettier' },
+                    json = { 'jq' },
                     css = { 'prettier' },
                     yaml = { 'prettier' },
                     html = { 'prettier' },
@@ -763,12 +763,6 @@ require("lazy").setup({
         config = function(_, opts)
             local resession = require('resession')
             resession.setup(opts)
-
-            vim.api.nvim_create_autocmd('VimLeavePre', {
-                callback = function()
-                    resession.save('last')
-                end,
-            })
         end,
     },
 
