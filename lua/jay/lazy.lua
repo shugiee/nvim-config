@@ -511,7 +511,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --fixed-strings --color=always --line-number --column --no-heading -P %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' --glob '!**/*.json' %s",
+                        "rg --fixed-strings --color=always --line-number --column --no-heading -P %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/.git/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' --glob '!**/*.json' %s",
                         escaped_query, escaped_root_dir
                     )
 
@@ -536,7 +536,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --color=always --line-number --column --no-heading %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                        "rg --color=always --line-number --column --no-heading %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/.git/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
                         escaped_query, escaped_root_dir
                     )
 
@@ -551,7 +551,7 @@ require("lazy").setup({
                         if key == 'ctrl-q' then
                             -- Send all results to quickfix
                             local qf_cmd = string.format(
-                                "rg --vimgrep %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                                "rg --vimgrep %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/.git/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
                                 escaped_query, escaped_root_dir
                             )
                             vim.fn.setqflist({}, 'r')
@@ -595,7 +595,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --ignore-case --fixed-strings --color=always --line-number --column --no-heading %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                        "rg --ignore-case --fixed-strings --color=always --line-number --column --no-heading %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/.git/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
                         escaped_query, escaped_root_dir
                     )
 
@@ -610,7 +610,7 @@ require("lazy").setup({
                         if key == 'ctrl-q' then
                             -- Send all results to quickfix
                             local qf_cmd = string.format(
-                                "rg --vimgrep --ignore-case --fixed-strings %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
+                                "rg --vimgrep --ignore-case --fixed-strings %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/.git/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' %s",
                                 escaped_query, escaped_root_dir
                             )
                             vim.fn.setqflist({}, 'r')
@@ -654,7 +654,7 @@ require("lazy").setup({
                     local escaped_root_dir = vim.fn.shellescape(root_dir)
 
                     local cmd = string.format(
-                        "rg --ignore-case --fixed-strings --color=always --line-number --column --no-heading %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' --glob '!**/*.spec*' %s",
+                        "rg --ignore-case --fixed-strings --color=always --line-number --column --no-heading %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/.git/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' --glob '!**/*.spec*' %s",
                         escaped_query, escaped_root_dir
                     )
 
@@ -669,7 +669,7 @@ require("lazy").setup({
                         if key == 'ctrl-q' then
                             -- Send all results to quickfix
                             local qf_cmd = string.format(
-                                "rg --vimgrep --ignore-case --fixed-strings %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/*git*/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' --glob '!**/*.spec*' %s",
+                                "rg --vimgrep --ignore-case --fixed-strings %s --glob '!**/*bazel*/**' --glob '!**/desktop/generated/**' --glob '!**/tmp/**' --glob '!node_modules' --glob '!**/.git/**' --glob '!**/*3rdparty*/**' --glob '!**/*.tools*/**' --glob '!**/*demo_files*/**' --glob '!**/*-lock*/**' --glob '!**/*metals*/**' --glob '!**/*_test*' --glob '!**/*.spec*' %s",
                                 escaped_query, escaped_root_dir
                             )
                             vim.fn.setqflist({}, 'r')

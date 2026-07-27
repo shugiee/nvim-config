@@ -427,14 +427,14 @@ vim.lsp.config('graphql', {
     root_dir = require("lspconfig.util").root_pattern(".graphqlrc*", "graphql.config.*", "package.json"),
 })
 
--- TypeScript/JavaScript (using tsgo)
-vim.lsp.config('tsgo', {
+-- TypeScript/JavaScript (using the native TypeScript 7 LSP)
+vim.lsp.config('tsc', {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
         lsp_attach(client, bufnr)
     end,
-    cmd = { "tsgo", "--lsp", "--stdio" },
+    cmd = { "tsc", "--lsp", "--stdio" },
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
     root_markers = { ".git", "tsconfig.json", "package.json" },
 })
@@ -468,5 +468,5 @@ vim.lsp.enable('pyright')
 vim.lsp.enable('html')
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('graphql')
-vim.lsp.enable('tsgo')
+vim.lsp.enable('tsc')
 vim.lsp.enable('cssls')
